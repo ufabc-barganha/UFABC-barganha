@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <!--Colors from http://www.singhajit.com/gradient-color-in-android/-->
+    <color name="gradStart">#FF2D9A59</color>
+    <color name="gradCenter">#FF42959A</color>
+    <color name="gradStop">#FF23729A</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+</resources>

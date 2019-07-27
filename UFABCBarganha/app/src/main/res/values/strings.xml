@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">UFABC Barganha</string>
     <string name="title_activity_feed">FeedActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="product_title">Produtos</string>
+    <string name="housing_title">Moradia</string>
+    <string name="food_title">Comida</string>
 </resources>

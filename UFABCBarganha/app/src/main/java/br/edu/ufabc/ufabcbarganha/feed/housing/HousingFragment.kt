@@ -1,4 +1,4 @@
-package br.edu.ufabc.ufabcbarganha
+package br.edu.ufabc.ufabcbarganha.feed.housing
 
 
 import android.Manifest
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
+import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -150,7 +151,9 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     private fun requestLocationPermission(){
         permissionRequested = true
-        requestPermissions( arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        requestPermissions( arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
     }
 
     private fun funEnableMapLocation(){

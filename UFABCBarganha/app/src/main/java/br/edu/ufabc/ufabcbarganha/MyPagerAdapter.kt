@@ -3,6 +3,9 @@ package br.edu.ufabc.ufabcbarganha
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import br.edu.ufabc.ufabcbarganha.feed.food.FoodFragment
+import br.edu.ufabc.ufabcbarganha.feed.housing.HousingFragment
+import br.edu.ufabc.ufabcbarganha.feed.products.ProductFragment
 
 class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

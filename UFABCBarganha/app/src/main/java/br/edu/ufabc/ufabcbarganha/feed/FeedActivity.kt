@@ -1,4 +1,4 @@
-package br.edu.ufabc.ufabcbarganha
+package br.edu.ufabc.ufabcbarganha.feed
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
+import br.edu.ufabc.ufabcbarganha.MyPagerAdapter
+import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.SettingsActivity
 import com.google.android.material.tabs.TabLayout
 
 class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

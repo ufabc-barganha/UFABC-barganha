@@ -26,7 +26,7 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name=".FeedActivity"
+                android:name=".feed.FeedActivity"
                 android:label="@string/title_activity_feed"
                 android:theme="@style/AppTheme.NoActionBar"/>
         <activity

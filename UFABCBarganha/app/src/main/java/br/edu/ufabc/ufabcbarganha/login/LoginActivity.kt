@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.*
-import br.edu.ufabc.ufabcbarganha.FeedActivity
+import br.edu.ufabc.ufabcbarganha.feed.FeedActivity
 import br.edu.ufabc.ufabcbarganha.R
 
 class LoginActivity : AppCompatActivity() {

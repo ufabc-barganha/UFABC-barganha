@@ -1,4 +1,4 @@
-package br.edu.ufabc.ufabcbarganha
+package br.edu.ufabc.ufabcbarganha.feed.products
 
 
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.edu.ufabc.ufabcbarganha.App
+import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.model.Post
 
 

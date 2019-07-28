@@ -7,6 +7,13 @@
     <string name="product_title">Produtos</string>
     <string name="housing_title">Moradia</string>
     <string name="food_title">Comida</string>
+    <string name="email">Email institucional</string>
+    <string name="password">Senha</string>
+    <string name="login">Entrar</string>
+    <string name="register">Registrar</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="login_title">Login</string>
+    <string name="logo_description">Logo</string>
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="title_activity_teste">teste</string>
@@ -30,5 +37,15 @@
     <string name="description_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="insterest">Tenho Interesse</string>
     <string name="bargain">Barganhar</string>
+    <string name="complete_name">Nome completo</string>
+    <string name="confirm_email">Confirme o email</string>
+    <string name="confirm_password">Confirme a senha</string>
+    <string name="check_your_email">Verifique seu email</string>
+    <string name="register_text">Bem-vindo ao clube! Para ter acesso à nossa plataforma, precisamos de alguns dados
+    </string>
+    <string name="forgot_password_text">Digite o seu e-mail institucional. Enviaremos um e-mail para você para recuperar
+        sua conta!
+    </string>
+    <string name="send_email">Enviar email</string>
 
 </resources>

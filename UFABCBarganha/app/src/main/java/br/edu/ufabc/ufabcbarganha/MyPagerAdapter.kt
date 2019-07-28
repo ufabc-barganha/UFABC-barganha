@@ -18,10 +18,12 @@ class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return when (position) {
+        val pageTitle = when (position) {
             0 -> R.string.product_title
             1 -> R.string.housing_title
             else -> R.string.food_title
-        }.toString()
+        }
+
+        return App.context.getResources().getString(pageTitle)
     }
 }

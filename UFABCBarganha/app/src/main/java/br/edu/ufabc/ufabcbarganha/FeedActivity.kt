@@ -45,17 +45,6 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.setupWithViewPager(viewPager)
 
-        /*val posts: ArrayList<Post> = ArrayList()
-for (i in 0..5) {
-    posts.add(Post("igor",
-            "caneta",
-            "https://img.kalunga.com.br/FotosdeProdutos/176470z.jpg",
-            5.00,
-            "Caneta muito boa"))
-}
-
-recyclerView.layoutManager = LinearLayoutManager(this)
-recyclerView.adapter = PostAdapter(posts)*/
     }
 
     override fun onBackPressed() {

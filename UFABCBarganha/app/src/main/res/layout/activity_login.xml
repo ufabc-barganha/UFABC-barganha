@@ -9,7 +9,9 @@
                 android:background="@color/black">
 
     <!-- Video do backgorund -->
-    <include layout="@layout/video_background_login"/>
+    <include layout="@layout/video_background_login"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"/>
 
     <RelativeLayout
             android:layout_width="wrap_content"

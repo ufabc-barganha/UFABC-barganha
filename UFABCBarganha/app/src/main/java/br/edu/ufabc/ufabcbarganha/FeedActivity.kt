@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
@@ -33,7 +32,9 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this, drawerLayout, toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()

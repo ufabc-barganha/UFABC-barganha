@@ -6,26 +6,42 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import br.edu.ufabc.ufabcbarganha.model.Post
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class FoodFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_food, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        populateFoodPosts(view)
+    }
+
+    private fun populateFoodPosts(view: View) {
+        val posts: ArrayList<Post> = ArrayList()
+
+        for (i in 0..5) {
+            posts.add(
+                Post("igor",
+                    "caneta",
+                    "https://img.kalunga.com.br/FotosdeProdutos/176470z.jpg",
+                    5.00,
+                    "Caneta muito boa")
+            )
+        }
+
+        val recyclerView = getView()?.findViewById<RecyclerView>(R.id.food_recycler_view)
+
+        recyclerView?.layoutManager = GridLayoutManager(App.context, 2)
+        recyclerView?.adapter = FoodAdapter(posts)
+    }
+
 
 
 }

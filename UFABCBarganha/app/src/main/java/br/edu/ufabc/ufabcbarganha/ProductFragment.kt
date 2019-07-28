@@ -30,17 +30,17 @@ class ProductFragment : Fragment() {
         val posts: ArrayList<Post> = ArrayList()
 
         for (i in 0..5) {
-            posts.add(Post("igor",
-               "caneta",
+            posts.add(Post("Fulano de Tal",
+               "Caneta - 4 cores",
                "https://img.kalunga.com.br/FotosdeProdutos/176470z.jpg",
                5.00,
-               "Caneta muito boa"))
+               "Ótimo estado de conservação. Escreve que é uma beleza!"))
         }
 
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.recycler_view)
 
         recyclerView?.layoutManager = LinearLayoutManager(App.context)
-        recyclerView?.adapter = PostAdapter(posts)
+        recyclerView?.adapter = ProductAdapter(posts)
     }
 
 }

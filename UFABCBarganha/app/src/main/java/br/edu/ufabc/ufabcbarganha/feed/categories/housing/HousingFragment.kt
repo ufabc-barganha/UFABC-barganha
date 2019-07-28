@@ -64,11 +64,13 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         //Setup layout
         val layoutListener = ViewTreeObserver.OnGlobalLayoutListener{
             if(!housingContainerSetuped) {
-                container_housing_info.translationY = container_housing_info.height.toFloat()
+                container_housing_info.translationY = -container_housing_info.height.toFloat()
                 housingContainerSetuped = true
             }
         }
         container_housing_info.viewTreeObserver.addOnGlobalLayoutListener (layoutListener)
+        //
+        container_housing_info.setOnClickListener { detailsClicked() }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -119,7 +121,7 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             selectedMarker?.setIcon(defaultMarkerIcon)
 
             if(m == null) {
-                container_housing_info.animate().setDuration(200L).translationY(container_housing_info.height.toFloat()).start()
+                container_housing_info.animate().setDuration(200L).translationY(-container_housing_info.height.toFloat()).start()
             }
         }
         selectedMarker = m
@@ -132,12 +134,22 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             tv_housing_description.text = post.description
             Glide.with(this).load(post.photo).placeholder(null).error(R.drawable.ic_image_not_found).into(iv_housing_photo)
             if(container_housing_info.translationY != 0f) {
-                //container_housing_info.animate().setDuration(200L).translationY(0f).start()
-                val intent = Intent(context, PostDetailActivity::class.java)
-                intent.putExtra(App.HOUSING_POSITION, post.id)
-                ContextCompat.startActivity(contextFrag, intent, null)
+                container_housing_info.animate().setDuration(200L).translationY(0f).start()
             }
         }
+    }
+
+    //---------------------------------------------- Details -----------------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------//
+
+    fun detailsClicked(){
+        if(selectedMarker == null){
+            return
+        }
+        val p = selectedMarker!!.tag as Post
+        val intent = Intent(context, PostDetailActivity::class.java)
+        intent.putExtra(App.HOUSING_POSITION, p.id)
+        ContextCompat.startActivity(contextFrag, intent, null)
     }
 
     //----------------------------------------------- Data ---------------------------------------------------//

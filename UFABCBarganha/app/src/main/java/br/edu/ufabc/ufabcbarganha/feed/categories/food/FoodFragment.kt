@@ -1,4 +1,4 @@
-package br.edu.ufabc.ufabcbarganha.feed.food
+package br.edu.ufabc.ufabcbarganha.feed.categories.food
 
 
 import android.os.Bundle
@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.data.FoodDAO
+import br.edu.ufabc.ufabcbarganha.data.ProductDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
+import kotlin.collections.ArrayList
 
 class FoodFragment : Fragment() {
 
@@ -27,23 +30,14 @@ class FoodFragment : Fragment() {
 
     private fun populateFoodPosts(view: View) {
         val posts: ArrayList<Post> = ArrayList()
+        val daoInst = FoodDAO.instance
 
-        for (i in 0..5) {
-            posts.add(
-                Post("igor",
-                    "caneta",
-                    "https://img.kalunga.com.br/FotosdeProdutos/176470z.jpg",
-                    5.00,
-                    "Caneta muito boa")
-            )
-        }
+        for (i in 0 until daoInst.size())
+            posts.add(daoInst.getItemAt(i))
 
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.food_recycler_view)
 
         recyclerView?.layoutManager = GridLayoutManager(App.context, 2)
         recyclerView?.adapter = FoodAdapter(posts)
     }
-
-
-
 }

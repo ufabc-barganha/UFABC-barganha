@@ -1,12 +1,16 @@
-package br.edu.ufabc.ufabcbarganha.feed.food
+package br.edu.ufabc.ufabcbarganha.feed.categories.food
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.feed.general.PostDetailActivity
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 
@@ -25,6 +29,12 @@ class FoodAdapter(val foodList: ArrayList<Post>): RecyclerView.Adapter<FoodAdapt
         holder.foodPrice.text = foodList[position].price.toString()
 
         Picasso.get().load(foodList[position].photo).into(holder.foodPhoto)
+
+        holder.itemView.setOnClickListener{
+            val intent = Intent(it.context, PostDetailActivity::class.java)
+            intent.putExtra(App.FOOD_POSITION, position)
+            ContextCompat.startActivity(it.context, intent, null)
+        }
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

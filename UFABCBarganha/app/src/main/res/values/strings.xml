@@ -62,5 +62,6 @@
     <string name="create_post_description">Descreva seu anúcio (opcional)</string>
     <string name="create_post_button">Anunciar</string>
     <string name="create_post">Criar Anúncio</string>
+    <string name="detalhes">Detalhes</string>
 
 </resources>

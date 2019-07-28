@@ -1,11 +1,13 @@
-package br.edu.ufabc.ufabcbarganha
+package br.edu.ufabc.ufabcbarganha.feed.general
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import br.edu.ufabc.ufabcbarganha.feed.food.FoodFragment
-import br.edu.ufabc.ufabcbarganha.feed.housing.HousingFragment
-import br.edu.ufabc.ufabcbarganha.feed.products.ProductFragment
+import br.edu.ufabc.ufabcbarganha.App
+import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.feed.categories.food.FoodFragment
+import br.edu.ufabc.ufabcbarganha.feed.categories.housing.HousingFragment
+import br.edu.ufabc.ufabcbarganha.feed.categories.products.ProductFragment
 
 class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

@@ -18,7 +18,10 @@
             android:name=".CreatePostActivity"
             android:label="@string/title_activity_create_post"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".feed.products.ProductDetailActivity"></activity>
+        <activity android:name=".feed.general.PostDetailActivity">
+        </activity>
+        <activity android:name="br.edu.ufabc.ufabcbarganha.feed.categories.food.FoodDetailActivity">
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -29,7 +32,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".feed.FeedActivity"
+            android:name=".feed.general.FeedActivity"
             android:label="@string/title_activity_feed"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

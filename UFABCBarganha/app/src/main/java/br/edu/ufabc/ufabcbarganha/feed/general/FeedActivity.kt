@@ -1,9 +1,8 @@
-package br.edu.ufabc.ufabcbarganha.feed
+package br.edu.ufabc.ufabcbarganha.feed.general
 
 import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import br.edu.ufabc.ufabcbarganha.CreatePostActivity
-import br.edu.ufabc.ufabcbarganha.MyPagerAdapter
 import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.SettingsActivity
 import com.google.android.material.tabs.TabLayout

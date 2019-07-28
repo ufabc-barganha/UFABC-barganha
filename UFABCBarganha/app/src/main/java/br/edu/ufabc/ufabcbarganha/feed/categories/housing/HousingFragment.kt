@@ -1,7 +1,9 @@
-package br.edu.ufabc.ufabcbarganha.feed.housing
+package br.edu.ufabc.ufabcbarganha.feed.categories.housing
 
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
+import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.data.HousingDAO
+import br.edu.ufabc.ufabcbarganha.feed.general.PostDetailActivity
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.fragment_housing.*
+import java.util.*
 
 class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
@@ -28,6 +34,7 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     }
 
+    private lateinit var contextFrag: Context
     private lateinit var maps: GoogleMap
     private lateinit var housings : List<Post>
     private var selectedMarker : Marker? = null
@@ -40,6 +47,11 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     //----------------------------------------- Initialization -----------------------------------------------//
     //--------------------------------------------------------------------------------------------------------//
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.contextFrag = context
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_housing, container, false)
@@ -82,9 +94,11 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     //--------------------------------------------------------------------------------------------------------//
 
     fun createHousingMarkers(){
-        for( post: Post in housings){
-            var marker = maps.addMarker(MarkerOptions().position(post.latLng!!))
-            marker.tag = post
+        //for( post: Post in housings){
+        for (i in 0 until housings.size){
+            var marker = maps.addMarker(MarkerOptions().position(housings[i].latLng!!))
+            housings[i].id = i
+            marker.tag = housings[i]
         }
     }
 
@@ -118,7 +132,10 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             tv_housing_description.text = post.description
             Glide.with(this).load(post.photo).placeholder(null).error(R.drawable.ic_image_not_found).into(iv_housing_photo)
             if(container_housing_info.translationY != 0f) {
-                container_housing_info.animate().setDuration(200L).translationY(0f).start()
+                //container_housing_info.animate().setDuration(200L).translationY(0f).start()
+                val intent = Intent(context, PostDetailActivity::class.java)
+                intent.putExtra(App.HOUSING_POSITION, post.id)
+                ContextCompat.startActivity(contextFrag, intent, null)
             }
         }
     }
@@ -133,13 +150,11 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     fun testHousings() : List<Post> {
         val testHousings = mutableListOf<Post>()
-        var h = Post("Joazinho Testeiro", "Apartamento 1 quarto", "https://cdn.cyrela.com.br/Files/Imagens/Imoveis/2091/destaque/130863767826047625_1944x1080-16terraco-apartamento.jpg", 600.0, "Ótima oportunidade de moradia teste perto da faculdade você não pode perder, não perca por favor")
-        h.latLng = LatLng(-23.643498, -46.527363)
-        testHousings.add(h)
-        h = Post("Maria do Teste", "A República", "https://imagens.zapcorp.com.br/imoveis/1899486/11992/5170c44d-fd52-4f76-9d08-34d67ff6d249_m.jpg", 900.0, "República masculina para teste, por favor apenas testadores oficiais blablabla, isso é so um teste")
-        h.latLng = LatLng(-23.643975, -46.525655)
-        testHousings.add(h)
-        return  testHousings
+        val housingDaoInst = HousingDAO.instance
+        for (i in 0 until housingDaoInst.size())
+            testHousings.add(housingDaoInst.getItemAt(i))
+
+        return testHousings
     }
 
 

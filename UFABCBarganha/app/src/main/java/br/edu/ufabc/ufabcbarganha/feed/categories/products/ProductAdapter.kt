@@ -1,4 +1,4 @@
-package br.edu.ufabc.ufabcbarganha.feed.products
+package br.edu.ufabc.ufabcbarganha.feed.categories.products
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,7 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.feed.general.PostDetailActivity
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -36,7 +38,9 @@ class ProductAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<ProductAd
         Picasso.get().load(posts[position].photo).into(holder.productPhoto)
 
         holder.itemView.setOnClickListener{
-            ContextCompat.startActivity(it.context, Intent(it.context, ProductDetailActivity::class.java), null)
+            val intent = Intent(it.context, PostDetailActivity::class.java)
+            intent.putExtra(App.PRODUCT_POSITION, position)
+            ContextCompat.startActivity(it.context, intent, null)
         }
     }
 

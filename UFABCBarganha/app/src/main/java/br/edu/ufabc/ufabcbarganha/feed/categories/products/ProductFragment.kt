@@ -1,4 +1,4 @@
-package br.edu.ufabc.ufabcbarganha.feed.products
+package br.edu.ufabc.ufabcbarganha.feed.categories.products
 
 
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.data.ProductDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
 
 
@@ -29,15 +30,11 @@ class ProductFragment : Fragment() {
     }
 
     private fun populatePosts(view: View) {
-        val posts: ArrayList<Post> = ArrayList()
+        val posts = ArrayList<Post>()
+        val daoInst = ProductDAO.instance
 
-        for (i in 0..5) {
-            posts.add(Post("Fulano de Tal",
-               "Caneta - 4 cores",
-               "https://img.kalunga.com.br/FotosdeProdutos/176470z.jpg",
-               5.00,
-               "Ótimo estado de conservação. Escreve que é uma beleza!"))
-        }
+        for (i in 0 until daoInst.size())
+            posts.add(daoInst.getItemAt(i))
 
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.recycler_view)
 

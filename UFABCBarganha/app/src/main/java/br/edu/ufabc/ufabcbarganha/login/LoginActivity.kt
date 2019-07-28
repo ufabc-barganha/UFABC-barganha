@@ -8,9 +8,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.*
-import br.edu.ufabc.ufabcbarganha.MainActivity
+import br.edu.ufabc.ufabcbarganha.FeedActivity
 import br.edu.ufabc.ufabcbarganha.R
-import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -29,8 +28,6 @@ class LoginActivity : AppCompatActivity() {
         rellay2.visibility = View.VISIBLE
         runVideo()
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setListeners() {
         loginButton.setOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, FeedActivity::class.java))
         }
 
         registerButton.setOnClickListener{
@@ -86,10 +83,4 @@ class LoginActivity : AppCompatActivity() {
         super.onDestroy()
         bgVideo.suspend()
     }
-
-
-
-
-
-
 }

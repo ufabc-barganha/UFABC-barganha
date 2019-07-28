@@ -6,9 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
-import br.edu.ufabc.ufabcbarganha.MainActivity
 import br.edu.ufabc.ufabcbarganha.R
-import kotlinx.android.synthetic.main.activity_login.*
 
 class RegisterActivity : AppCompatActivity() {
 

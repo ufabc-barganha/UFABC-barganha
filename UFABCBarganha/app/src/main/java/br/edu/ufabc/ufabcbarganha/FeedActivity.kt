@@ -1,5 +1,6 @@
 package br.edu.ufabc.ufabcbarganha
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -58,25 +59,20 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
+            R.id.nav_my_posts -> {
                 // Handle the camera action
             }
-            R.id.nav_gallery -> {
+            R.id.nav_my_interests -> {
 
             }
-            R.id.nav_slideshow -> {
-
+            R.id.nav_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
-            R.id.nav_tools -> {
+            R.id.nav_logout -> {
+                // TODO: clear user info
 
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
+                finish()
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

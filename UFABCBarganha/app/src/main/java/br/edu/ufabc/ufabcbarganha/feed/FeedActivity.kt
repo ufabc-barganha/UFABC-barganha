@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
+import br.edu.ufabc.ufabcbarganha.CreatePostActivity
 import br.edu.ufabc.ufabcbarganha.MyPagerAdapter
 import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.SettingsActivity
@@ -26,10 +27,9 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
+        val fab: FloatingActionButton = findViewById(R.id.create_post_fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            startActivity(Intent(this, CreatePostActivity::class.java))
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

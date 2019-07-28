@@ -55,5 +55,12 @@
     <string name="settings">Configurações</string>
     <string name="logout">Sair</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_create_post">CreatePostActivity</string>
+    <string name="create_post_title">O que você está anunciando?</string>
+    <string name="create_post_price">Preço</string>
+    <string name="create_post_place">Localização</string>
+    <string name="create_post_description">Descreva seu anúcio (opcional)</string>
+    <string name="create_post_button">Anunciar</string>
+    <string name="create_post">Criar Anúncio</string>
 
 </resources>

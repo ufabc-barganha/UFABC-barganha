@@ -6,45 +6,124 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/general_space">
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
-        <TextView
-            android:text="username here"
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/general_space"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:text="produt name here"
-            android:id="@+id/product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/username"
-            android:padding="@dimen/general_space"/>
-
-        <ImageView
-            android:id="@+id/photo"
+        <RelativeLayout
+            android:id="@+id/post_header"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/general_space">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:scaleType="centerCrop"
-            tools:src="@color/colorAccent"
-            android:layout_below="@id/product_name"/>
+            tools:src="@color/colorAccent"/>
 
-        <TextView
-            android:text="price here"
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/photo"
-            android:padding="@dimen/general_space"/>
+            <TextView
+                android:id="@+id/username"
+                android:text="username here"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/user_photo"
+                android:layout_alignTop="@id/user_photo"
+                android:paddingLeft="8dp"/>
 
-        <TextView
-            android:text="Hello world"
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
+            <TextView
+                android:text="time here"
+                android:id="@+id/post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/user_photo"
+                android:layout_alignBottom="@id/user_photo"
+                android:paddingLeft="8dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/post_info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/price"
-            android:padding="@dimen/general_space"/>
+            android:background="@android:color/white"
+            android:layout_below="@id/post_header">
+
+            <TextView
+                android:id="@+id/product_name"
+                android:text="produt name here"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/general_space"/>
+
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                tools:src="@color/colorAccent"
+                android:layout_below="@id/product_name"/>
+
+            <TextView
+                android:id="@+id/price"
+                android:text="price here"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/photo"
+                android:padding="@dimen/general_space"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/post_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/post_info">
+
+            <TextView
+                android:id="@+id/description"
+                android:text="@string/description_example"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/general_space"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/description">
+
+                <Button
+                    android:id="@+id/interest"
+                    android:text="@string/insterest"
+                    android:textColor="@android:color/white"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/bargain"
+                    android:text="@string/bargain"
+                    android:textColor="@android:color/white"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

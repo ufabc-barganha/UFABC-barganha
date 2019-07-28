@@ -27,5 +27,8 @@
 
     <string name="placeholder_title">Title here</string>
     <string name="placeholder_description">An description text go here, blablabla, Ipsum lore blablabla!!</string>
+    <string name="description_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="insterest">Tenho Interesse</string>
+    <string name="bargain">Barganhar</string>
 
 </resources>

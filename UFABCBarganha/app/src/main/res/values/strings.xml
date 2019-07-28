@@ -7,4 +7,9 @@
     <string name="product_title">Produtos</string>
     <string name="housing_title">Moradia</string>
     <string name="food_title">Comida</string>
+
+
+    <string name="placeholder_title">Title here</string>
+    <string name="placeholder_description">An description text go here, blablabla, Ipsum lore blablabla!!</string>
+
 </resources>

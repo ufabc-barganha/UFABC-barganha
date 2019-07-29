@@ -9,12 +9,17 @@ import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.data.ProductDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
+import kotlinx.android.synthetic.main.activity_create_post.*
 
 class MyInterestsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_interests)
+
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
         populatePosts()
     }

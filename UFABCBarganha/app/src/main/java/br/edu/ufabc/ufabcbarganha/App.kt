@@ -12,6 +12,7 @@ class App: Application() {
         const val PRODUCT_POSITION = "productPosition"
         const val HOUSING_POSITION = "housingPosition"
         const val FOOD_POSITION = "foodPosition"
+        const val IS_RETURN = "isReturn"
     }
 
     override fun onCreate() {

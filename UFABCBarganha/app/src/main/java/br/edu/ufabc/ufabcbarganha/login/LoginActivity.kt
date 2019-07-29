@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.*
+import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.feed.general.FeedActivity
 import br.edu.ufabc.ufabcbarganha.R
 
@@ -35,10 +36,14 @@ class LoginActivity : AppCompatActivity() {
 
         setViews()
         setListeners()
-
+        var delay = 2000L
+        val ret = intent.getBooleanExtra(App.IS_RETURN, false)
+        if(ret){
+            delay = 0
+        }
         //exibe o logo por 2000 ms e mostra o login com o vídeo no fundo
-        handler.postDelayed(runnable, 2000)
-        //runVideo()
+        handler.postDelayed(runnable, delay)
+
     }
 
     private fun setViews() {

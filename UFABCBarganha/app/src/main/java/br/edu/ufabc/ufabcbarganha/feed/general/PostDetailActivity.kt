@@ -12,6 +12,7 @@ import br.edu.ufabc.ufabcbarganha.data.HousingDAO
 import br.edu.ufabc.ufabcbarganha.data.ProductDAO
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_settings.*
 
 class PostDetailActivity : AppCompatActivity() {
 
@@ -31,8 +32,15 @@ class PostDetailActivity : AppCompatActivity() {
         val foodPosition = intent.getIntExtra(App.FOOD_POSITION, -1)
         val housingPosition = intent.getIntExtra(App.HOUSING_POSITION, -1)
 
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setViews()
         populateCard(productPosition, foodPosition, housingPosition)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun setViews() {

@@ -46,7 +46,7 @@
     <string name="check_your_email">Verifique seu email</string>
     <string name="register_text">Bem-vindo ao clube! Para ter acesso à nossa plataforma, precisamos de alguns dados
     </string>
-    <string name="forgot_password_text">Digite o seu e-mail institucional. Enviaremos um e-mail para você para recuperar
+    <string name="forgot_password_text">Digite o seu e-mail institucional. Enviaremos um e-mail para você recuperar
         sua conta!
     </string>
     <string name="send_email">Enviar email</string>
@@ -63,6 +63,8 @@
     <string name="create_post_button">Anunciar</string>
     <string name="create_post">Criar Anúncio</string>
     <string name="detalhes">Detalhes</string>
+    <string name="crate_an_account">Criar uma conta</string>
+    <string name="recover_pass">Recupere sua senha</string>
     <string name="contact_phone">Telefone</string>
     <string name="enable_notifications">Habilitar Notificações</string>
     <string name="enable_emails">Receber emails</string>

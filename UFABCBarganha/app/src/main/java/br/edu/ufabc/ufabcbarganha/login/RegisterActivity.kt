@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
 
 class RegisterActivity : AppCompatActivity() {
@@ -28,8 +29,10 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setListeners() {
         registerButton.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
-            Toast.makeText(this, R.string.check_your_email, Toast.LENGTH_LONG)
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra(App.IS_RETURN, true)
+            Toast.makeText(this, R.string.check_your_email, Toast.LENGTH_LONG).show()
+            startActivity(intent)
         }
     }
 
@@ -50,6 +53,11 @@ class RegisterActivity : AppCompatActivity() {
 
         passwordEditText = findViewById(R.id.passwordEditText)
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bgVideo.start()
     }
 
 }

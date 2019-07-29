@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.VideoView
+import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
 
 class ForgotPassActivity : AppCompatActivity() {
@@ -36,8 +37,10 @@ class ForgotPassActivity : AppCompatActivity() {
 
     private fun setListeners() {
         sendEmailButton.setOnClickListener{
-            Toast.makeText(this, R.string.check_your_email, Toast.LENGTH_LONG)
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra(App.IS_RETURN, true)
+            Toast.makeText(this, R.string.check_your_email, Toast.LENGTH_LONG).show()
+            startActivity(intent)
         }
     }
 
@@ -45,5 +48,10 @@ class ForgotPassActivity : AppCompatActivity() {
         bgVideo = findViewById(R.id.loginVideoView)
         emailEditText = findViewById(R.id.emailEditText)
         sendEmailButton = findViewById(R.id.sendEmailButton)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bgVideo.start()
     }
 }

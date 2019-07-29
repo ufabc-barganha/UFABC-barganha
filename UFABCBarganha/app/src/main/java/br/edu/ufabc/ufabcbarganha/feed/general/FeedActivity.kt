@@ -11,9 +11,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
-import br.edu.ufabc.ufabcbarganha.CreatePostActivity
-import br.edu.ufabc.ufabcbarganha.R
-import br.edu.ufabc.ufabcbarganha.SettingsActivity
+import br.edu.ufabc.ufabcbarganha.*
+import br.edu.ufabc.ufabcbarganha.user.MyInterestsActivity
+import br.edu.ufabc.ufabcbarganha.user.MyPostsActivity
 import com.google.android.material.tabs.TabLayout
 
 class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -63,10 +63,10 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_my_posts -> {
-                // Handle the camera action
+                startActivity(Intent(this, MyPostsActivity::class.java))
             }
             R.id.nav_my_interests -> {
-
+                startActivity(Intent(this, MyInterestsActivity::class.java))
             }
             R.id.nav_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))

@@ -68,6 +68,8 @@
     <string name="enable_emails">Receber emails</string>
     <string name="save">Salvar</string>
     <string name="remove_interest">Perdi o interesse =(</string>
+    <string name="change_password">Mudar Senha</string>
+    <string name="change_user_data">Mudar Dados</string>
 
 
 </resources>

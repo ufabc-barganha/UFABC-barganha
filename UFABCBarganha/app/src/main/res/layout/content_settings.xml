@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content">
             <TextView
                     android:text="@string/complete_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content" android:id="@+id/tv_complete_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
             <EditText
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content">
             <TextView
                     android:text="@string/contact_phone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content" android:id="@+id/tv_phone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
             <EditText
@@ -49,6 +49,12 @@
                     android:ems="10"
                     android:id="@+id/et_phone"/>
         </LinearLayout>
+        <Button
+                android:text="@string/change_user_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginTop="20dp" android:textColor="@color/white"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -82,6 +88,14 @@
                     android:ems="10"
                     android:id="@+id/et_confirm_password"/>
         </LinearLayout>
+
+        <Button
+                android:text="@string/change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button_change_password"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginTop="20dp" android:textColor="@color/white"/>
+
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -96,11 +110,5 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/cb_enable_emails" android:layout_weight="1"/>
         </LinearLayout>
-        <Button
-                android:text="@string/save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button"
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginTop="20dp" android:textColor="@color/white"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

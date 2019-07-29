@@ -43,19 +43,17 @@
 
 
         <MultiAutoCompleteTextView
-            android:id="@+id/create_post_description"
-            android:hint="@string/create_post_description"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:textColor="@color/colorPrimary"
-            android:background="@color/white"
-            android:textSize="16dp"
-            android:minLines="10"
-            android:padding="@dimen/general_space"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/create_post_place"/>
-
-
+                android:id="@+id/create_post_description"
+                android:hint="@string/create_post_description"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
+                android:background="@color/white"
+                android:textSize="16dp"
+                android:minLines="10"
+                android:padding="@dimen/general_space"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/create_post_place"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_photo_button"
             app:backgroundTint="@color/colorPrimaryDark"

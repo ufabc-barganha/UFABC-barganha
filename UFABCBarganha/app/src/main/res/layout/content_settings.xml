@@ -8,4 +8,81 @@
     tools:context=".SettingsActivity"
     tools:showIn="@layout/activity_settings">
 
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginLeft="16dp" android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/complete_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/tv_complete_name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/et_complete_name"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/contact_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/tv_phone"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/et_phone"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/tv_password"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:ems="10"
+                    android:id="@+id/et_password"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <CheckBox
+                    android:text="@string/enable_notifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/cb_enable_notification"/>
+            <CheckBox
+                    android:text="@string/enable_emails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/cb_enable_emails" android:layout_weight="1"/>
+        </LinearLayout>
+        <Button
+                android:text="@string/save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginTop="20dp" android:textColor="@color/white"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

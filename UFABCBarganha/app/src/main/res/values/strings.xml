@@ -72,6 +72,10 @@
     <string name="remove_interest">Perdi o interesse =(</string>
     <string name="change_password">Mudar Senha</string>
     <string name="change_user_data">Mudar Dados</string>
+    <string name="camera_permission_denied_message">Conceda a permissão da câmera para poder tirar a foto.</string>
+    <string name="no_camera_app">Não há aplicativo para fotografia.</string>
+    <string name="no_image">Nenhuma imagem recebida</string>
+    <string name="choose_image_app">Escolha o app que deseja para selecionar sua foto.</string>
 
 
 </resources>

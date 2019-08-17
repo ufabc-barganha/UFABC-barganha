@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "665863783890",
+    "firebase_url": "https://ufabc-barganha.firebaseio.com",
+    "project_id": "ufabc-barganha",
+    "storage_bucket": "ufabc-barganha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665863783890:android:6a69990abe997724",
+        "android_client_info": {
+          "package_name": "br.edu.ufabc.ufabcbarganha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665863783890-42tb4n6n9fmqpe7ipeumua7am9s6hqu0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufabc.ufabcbarganha",
+            "certificate_hash": "5b9117fa9ec185f025b9bafe1f7a5d03444721f9"
+          }
+        },
+        {
+          "client_id": "665863783890-pc4e03ik73oeee4vsrrr173f517bqfm5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUHw4aN8ZEd9VNm3R4B7UyI67S7fwtanE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665863783890-pc4e03ik73oeee4vsrrr173f517bqfm5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

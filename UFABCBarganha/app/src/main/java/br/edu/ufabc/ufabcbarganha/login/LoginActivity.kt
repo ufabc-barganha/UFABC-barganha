@@ -6,11 +6,15 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.*
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.feed.general.FeedActivity
 import br.edu.ufabc.ufabcbarganha.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var registerButton: Button
     lateinit var emailEditText: EditText
     lateinit var passwordEditText: EditText
+
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     var handler = Handler()
     var runnable = Runnable {
@@ -37,13 +43,28 @@ class LoginActivity : AppCompatActivity() {
         setViews()
         setListeners()
         var delay = 2000L
-        val ret = intent.getBooleanExtra(App.IS_RETURN, false)
-        if(ret){
+
+        if(intent.getBooleanExtra(App.IS_RETURN, false)){
             delay = 0
         }
-        //exibe o logo por 2000 ms e mostra o login com o vídeo no fundo
+
         handler.postDelayed(runnable, delay)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bgVideo.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bgVideo.suspend()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        goToFeed(mAuth.currentUser)
     }
 
     private fun setViews() {
@@ -57,20 +78,6 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordEditText)
     }
 
-    private fun setListeners() {
-        loginButton.setOnClickListener{
-            startActivity(Intent(this, FeedActivity::class.java))
-        }
-
-        registerButton.setOnClickListener{
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
-
-        forgotPassButton.setOnClickListener{
-            startActivity(Intent(this, ForgotPassActivity::class.java))
-        }
-    }
-
     private fun runVideo(){
         bgVideo.setVideoURI(Uri.parse("android.resource://"+packageName+"/"+R.raw.login_video))
         bgVideo.start()
@@ -79,13 +86,56 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        bgVideo.start()
+    private fun setListeners() {
+        loginButton.setOnClickListener{
+            login()
+        }
+
+        registerButton.setOnClickListener{
+            register()
+        }
+
+        forgotPassButton.setOnClickListener{
+            forgotPassword()
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bgVideo.suspend()
+    private fun login() {
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+
+        if (!email.isEmpty() && !password.isEmpty()) {
+            mAuth.signInWithEmailAndPassword(email, password).
+                addOnCompleteListener(this, OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        goToFeed(mAuth.currentUser)
+                    } else {
+                        Toast.makeText(this, R.string.wrong_credentials, Toast.LENGTH_LONG).show()
+                    }
+                })
+
+        } else {
+            Toast.makeText(this, R.string.fill_credentials, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun register() {
+        startActivity(Intent(this, RegisterActivity::class.java))
+    }
+
+    private fun forgotPassword() {
+        startActivity(Intent(this, ForgotPassActivity::class.java))
+    }
+
+    private fun goToFeed(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            if (currentUser.isEmailVerified) {
+                Log.e("igor", currentUser.toString())
+                startActivity(Intent(this, FeedActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, R.string.verify_email, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

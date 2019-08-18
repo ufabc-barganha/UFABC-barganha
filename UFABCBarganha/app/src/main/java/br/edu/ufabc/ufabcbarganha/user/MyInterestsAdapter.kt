@@ -16,7 +16,7 @@ import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MyInterestsAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<MyInterestsAdapter.ViewHolder>() {
+class MyInterestsAdapter(val posts: List<Post>): RecyclerView.Adapter<MyInterestsAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = posts.size
 
@@ -28,6 +28,7 @@ class MyInterestsAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<MyInt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val post = posts[position]
         holder.username.text = posts[position].username
         holder.postTime.text = "6 de junho às 13:03"
         holder.productName.text = posts[position].productName
@@ -40,7 +41,7 @@ class MyInterestsAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<MyInt
 
         holder.itemView.setOnClickListener{
             val intent = Intent(it.context, PostDetailActivity::class.java)
-            intent.putExtra(App.PRODUCT_POSITION, position)
+            intent.putExtra(App.POST_EXTRA, post)
             ContextCompat.startActivity(it.context, intent, null)
         }
         // My Interest

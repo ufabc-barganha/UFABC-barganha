@@ -9,9 +9,7 @@ class App: Application() {
         lateinit var context: Context
             private set
 
-        const val PRODUCT_POSITION = "productPosition"
-        const val HOUSING_POSITION = "housingPosition"
-        const val FOOD_POSITION = "foodPosition"
+        const val POST_EXTRA = "extra_post"
         const val IS_RETURN = "isReturn"
     }
 

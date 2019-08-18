@@ -6,15 +6,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
-import br.edu.ufabc.ufabcbarganha.data.DAO
-import br.edu.ufabc.ufabcbarganha.data.FoodDAO
-import br.edu.ufabc.ufabcbarganha.data.HousingDAO
-import br.edu.ufabc.ufabcbarganha.data.ProductDAO
+import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class PostDetailActivity : AppCompatActivity() {
+
+    companion object{
+        val POST_EXTRA = "extra_post"
+    }
 
     lateinit var username: TextView
     lateinit var postTime: TextView
@@ -28,14 +29,12 @@ class PostDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_detail)
 
-        val productPosition = intent.getIntExtra(App.PRODUCT_POSITION, -1)
-        val foodPosition = intent.getIntExtra(App.FOOD_POSITION, -1)
-        val housingPosition = intent.getIntExtra(App.HOUSING_POSITION, -1)
+        val post = intent.getSerializableExtra(POST_EXTRA) as Post
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setViews()
-        populateCard(productPosition, foodPosition, housingPosition)
+        populate(post)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -53,23 +52,14 @@ class PostDetailActivity : AppCompatActivity() {
         productPhoto = findViewById(R.id.product_photo)
     }
 
-    private fun populateCard(productPosition: Int, foodPosition: Int, housingPosition: Int) {
-        when {
-            productPosition != -1 -> populate(productPosition, ProductDAO.instance)
-            foodPosition != -1 -> populate(foodPosition, FoodDAO.instance)
-            housingPosition != -1 -> populate(housingPosition, HousingDAO.instance)
-        }
-    }
-
-    private fun populate(position: Int, daoInst: DAO) {
-        username.text = daoInst.getItemAt(position).username
-        postTime.text = daoInst.getItemAt(position).postTime.toString()
-        productName.text = daoInst.getItemAt(position).productName
-        productPrice.text = String.format("R$ %.2f", daoInst.getItemAt(position).price)
-        productDescription.text = daoInst.getItemAt(position).description
+    private fun populate(post: Post) {
+        username.text = post.username
+        postTime.text = post.postTime.toString()
+        productName.text = post.productName
+        productPrice.text = String.format("R$ %.2f", post.price)
+        productDescription.text = post.description
 
         userPhoto.setImageResource(R.drawable.ic_person)
-
-        Picasso.get().load(daoInst.getItemAt(position).photo).into(productPhoto)
+        Picasso.get().load(post.photo).into(productPhoto)
     }
 }

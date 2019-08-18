@@ -15,7 +15,7 @@ import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ProductAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class ProductAdapter(val posts: List<Post>): RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = posts.size
 
@@ -27,6 +27,7 @@ class ProductAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<ProductAd
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val post = posts[position]
         holder.username.text = posts[position].username
         holder.postTime.text = "6 de junho às 13:03"
         holder.productName.text = posts[position].productName
@@ -39,7 +40,7 @@ class ProductAdapter(val posts: ArrayList<Post>): RecyclerView.Adapter<ProductAd
 
         holder.itemView.setOnClickListener{
             val intent = Intent(it.context, PostDetailActivity::class.java)
-            intent.putExtra(App.PRODUCT_POSITION, position)
+            intent.putExtra(App.POST_EXTRA, post)
             ContextCompat.startActivity(it.context, intent, null)
         }
     }

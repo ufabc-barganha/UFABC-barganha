@@ -1,13 +1,13 @@
 package br.edu.ufabc.ufabcbarganha.user
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
-import br.edu.ufabc.ufabcbarganha.data.ProductDAO
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
 import kotlinx.android.synthetic.main.activity_create_post.*
 
@@ -25,16 +25,17 @@ class MyInterestsActivity : AppCompatActivity() {
     }
 
     private fun populatePosts() {
-        val posts = ArrayList<Post>()
-        val daoInst = ProductDAO.instance
-
-        for (i in 0 until daoInst.size())
-            posts.add(daoInst.getItemAt(i))
-
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-
         recyclerView?.layoutManager = LinearLayoutManager(App.context)
-        recyclerView?.adapter = MyInterestsAdapter(posts)
+
+        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+            override fun onSuccess(result: List<Post>) {
+                recyclerView?.adapter = MyInterestsAdapter(result)
+            }
+            override fun onFailure(e: Exception) {
+                //Failed to retrieve post data
+            }
+        })
     }
 
 }

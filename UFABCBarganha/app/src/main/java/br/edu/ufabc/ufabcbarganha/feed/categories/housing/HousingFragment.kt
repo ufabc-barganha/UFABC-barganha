@@ -14,7 +14,9 @@ import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
-import br.edu.ufabc.ufabcbarganha.data.HousingDAO
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
+import br.edu.ufabc.ufabcbarganha.feed.categories.food.FoodAdapter
 import br.edu.ufabc.ufabcbarganha.feed.general.PostDetailActivity
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.bumptech.glide.Glide
@@ -98,8 +100,8 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     fun createHousingMarkers(){
         //for( post: Post in housings){
         for (i in 0 until housings.size){
-            var marker = maps.addMarker(MarkerOptions().position(housings[i].latLng!!))
-            housings[i].id = i
+            var marker = maps.addMarker(MarkerOptions().position(housings[i].retrieveLatLng()!!))
+            housings[i].id = i.toString()
             marker.tag = housings[i]
         }
     }
@@ -148,7 +150,7 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         }
         val p = selectedMarker!!.tag as Post
         val intent = Intent(context, PostDetailActivity::class.java)
-        intent.putExtra(App.HOUSING_POSITION, p.id)
+        intent.putExtra(App.POST_EXTRA, p)
         ContextCompat.startActivity(contextFrag, intent, null)
     }
 
@@ -156,18 +158,17 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     //--------------------------------------------------------------------------------------------------------//
 
     fun loadHousings(){
-        this.housings = testHousings()
-        createHousingMarkers()
+        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+            override fun onSuccess(result: List<Post>) {
+                housings = result
+                createHousingMarkers()
+            }
+            override fun onFailure(e: Exception) {
+                //Failed to retrieve post data
+            }
+        })
     }
 
-    fun testHousings() : List<Post> {
-        val testHousings = mutableListOf<Post>()
-        val housingDaoInst = HousingDAO.instance
-        for (i in 0 until housingDaoInst.size())
-            testHousings.add(housingDaoInst.getItemAt(i))
-
-        return testHousings
-    }
 
 
     //------------------------------------- Maps Location Auxiliar -------------------------------------------//

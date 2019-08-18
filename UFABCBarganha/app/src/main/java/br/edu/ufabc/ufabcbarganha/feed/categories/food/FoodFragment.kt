@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
-import br.edu.ufabc.ufabcbarganha.data.FoodDAO
-import br.edu.ufabc.ufabcbarganha.data.ProductDAO
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
 import kotlin.collections.ArrayList
 
@@ -29,15 +29,16 @@ class FoodFragment : Fragment() {
     }
 
     private fun populateFoodPosts(view: View) {
-        val posts: ArrayList<Post> = ArrayList()
-        val daoInst = FoodDAO.instance
-
-        for (i in 0 until daoInst.size())
-            posts.add(daoInst.getItemAt(i))
-
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.food_recycler_view)
-
         recyclerView?.layoutManager = GridLayoutManager(App.context, 2)
-        recyclerView?.adapter = FoodAdapter(posts)
+
+        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>>{
+            override fun onSuccess(result: List<Post>) {
+                recyclerView?.adapter = FoodAdapter(result)
+            }
+            override fun onFailure(e: Exception) {
+                //Failed to retrieve post data
+            }
+        })
     }
 }

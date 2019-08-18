@@ -130,12 +130,12 @@ class LoginActivity : AppCompatActivity() {
     private fun goToFeed(currentUser: FirebaseUser?) {
         if (currentUser != null) {
             if (currentUser.isEmailVerified) {
-                Log.e("igor", currentUser.toString())
-                startActivity(Intent(this, FeedActivity::class.java))
+                //startActivity(Intent(this, FeedActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, R.string.verify_email, Toast.LENGTH_LONG).show()
             }
         }
     }
+
 }

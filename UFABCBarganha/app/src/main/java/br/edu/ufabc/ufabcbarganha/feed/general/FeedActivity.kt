@@ -15,9 +15,10 @@ import br.edu.ufabc.ufabcbarganha.*
 import br.edu.ufabc.ufabcbarganha.user.MyInterestsActivity
 import br.edu.ufabc.ufabcbarganha.user.MyPostsActivity
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 
 class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +73,7 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, SettingsActivity::class.java))
             }
             R.id.nav_logout -> {
-                // TODO: clear user info
-
+                mAuth.signOut()
                 finish()
             }
         }

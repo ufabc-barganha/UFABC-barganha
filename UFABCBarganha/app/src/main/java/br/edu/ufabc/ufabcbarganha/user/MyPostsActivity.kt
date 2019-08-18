@@ -29,7 +29,7 @@ class MyPostsActivity : AppCompatActivity() {
 
         recyclerView?.layoutManager = LinearLayoutManager(App.context)
 
-        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+        PostDAO.getAll( object : FirestoreDatabaseOperationListener<List<Post>> {
             override fun onSuccess(result: List<Post>) {
                 recyclerView?.adapter = MyPostsAdapter(result)
             }

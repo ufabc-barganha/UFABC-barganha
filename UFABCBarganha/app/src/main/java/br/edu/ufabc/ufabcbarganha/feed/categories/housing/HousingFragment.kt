@@ -158,7 +158,7 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     //--------------------------------------------------------------------------------------------------------//
 
     fun loadHousings(){
-        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+        PostDAO.getAllByType(Post.PostType.HOUSING, object : FirestoreDatabaseOperationListener<List<Post>> {
             override fun onSuccess(result: List<Post>) {
                 housings = result
                 createHousingMarkers()

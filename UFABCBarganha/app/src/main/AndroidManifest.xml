@@ -22,16 +22,19 @@
         <activity
                 android:name=".CreatePostActivity"
                 android:label="@string/title_activity_create_post"
-                android:theme="@style/AppTheme.NoActionBar"/>
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait"/>
 
         <activity android:name=".feed.general.PostDetailActivity"
-                  android:configChanges="orientation|screenSize">
+                  android:configChanges="orientation|screenSize"
+                  android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
                 android:name=".user.MyPostsActivity"
                 android:label="@string/title_activity_settings"
@@ -39,7 +42,8 @@
         <activity
                 android:name=".user.MyInterestsActivity"
                 android:label="@string/title_activity_settings"
-                android:theme="@style/AppTheme.NoActionBar" />
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -48,13 +52,13 @@
         <activity
             android:name=".feed.general.FeedActivity"
             android:label="@string/title_activity_feed"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".login.ForgotPassActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.RegisterActivity"
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.LoginActivity"

@@ -16,7 +16,7 @@ import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MyInterestsAdapter(val posts: List<Post>): RecyclerView.Adapter<MyInterestsAdapter.ViewHolder>() {
+class MyInterestsAdapter(val posts: List<Post>, val activity: MyInterestsActivity): RecyclerView.Adapter<MyInterestsAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = posts.size
 
@@ -46,6 +46,7 @@ class MyInterestsAdapter(val posts: List<Post>): RecyclerView.Adapter<MyInterest
         }
         // My Interest
         holder.itemView.findViewById<Button>(R.id.interest).setText(R.string.remove_interest)
+        holder.itemView.findViewById<Button>(R.id.interest).setOnClickListener { activity.unfavoritePost(post) }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

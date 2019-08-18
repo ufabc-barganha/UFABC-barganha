@@ -89,6 +89,13 @@
     <string name="choose_image_app">Escolha o app que deseja para selecionar sua foto.</string>
     <string name="create_post_success">Post criado com sucesso!</string>
     <string name="create_post_failure">Erro ao criar post!</string>
+    <string name="favorite_post_failure">Erro ao favoritar post</string>
+    <string name="favorite_post_success">Sucesso ao favoritar post</string>
+    <string name="unfavorite_post_failure">Erro ao desfavoritar post</string>
+    <string name="unfavorite_post_success">Sucesso ao desfavoritar post</string>
+
+
+
     <string name="empty_mail">Por favor, preencha seu email</string>
 
 

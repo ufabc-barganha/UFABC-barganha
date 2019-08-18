@@ -1,6 +1,7 @@
 package br.edu.ufabc.ufabcbarganha.data.firestore
 
 import br.edu.ufabc.ufabcbarganha.model.Post
+import br.edu.ufabc.ufabcbarganha.model.UserData
 import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
 import com.google.firebase.firestore.QuerySnapshot
 import java.lang.RuntimeException
@@ -9,6 +10,8 @@ object PostDAO {
 
     const val POSTS_COLLECTION = "posts"
     const val POST_TYPE_FIELD = "postType"
+    const val USER_ID_FIELD = "userId"
+
 
     fun add(post: Post, callback: FirestoreDatabaseOperationListener<Void?>) {
         val userId = FirebaseUserHelper.getUserId()
@@ -26,8 +29,9 @@ object PostDAO {
             callback.onFailure(RuntimeException("Failure user is null"))
         }
         BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION)
+            .whereEqualTo(USER_ID_FIELD, userId)
             .get()
-            .addOnSuccessListener { result -> callback.onSuccess(documentsToPostsFilterByUserId(result, userId!!)) }
+            .addOnSuccessListener { result -> callback.onSuccess(documentsToPosts(result)) }
             .addOnFailureListener { result -> callback.onFailure(result)}
     }
 
@@ -46,6 +50,21 @@ object PostDAO {
             .addOnFailureListener { result -> callback.onFailure(result)}
     }
 
+    fun getFavoritedPosts(callback: FirestoreDatabaseOperationListener<List<Post>>){
+        UserDataDAO.getUserData(object : FirestoreDatabaseOperationListener<UserData>{
+            override fun onSuccess(userData: UserData) {
+                BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION)
+                    .get()
+                    .addOnSuccessListener { result -> callback.onSuccess(documentsToPostsFilterByFavorites(result, userData)) }
+                    .addOnFailureListener { result -> callback.onFailure(result)}
+            }
+
+            override fun onFailure(e: Exception) {
+                callback.onFailure(e)
+            }
+        })
+    }
+
     private fun documentsToPosts(qSnapshot: QuerySnapshot): List<Post> {
         val posts = mutableListOf<Post>()
         for (document in qSnapshot.documents) {
@@ -58,17 +77,16 @@ object PostDAO {
         return posts
     }
 
-    private fun documentsToPostsFilterByUserId(qSnapshot: QuerySnapshot, userId: String): List<Post> {
+    private fun documentsToPostsFilterByFavorites(qSnapshot: QuerySnapshot, userData: UserData): List<Post> {
         val posts = mutableListOf<Post>()
         for (document in qSnapshot.documents) {
             val p = document.toObject(Post::class.java)
-            if (p != null) {
+            if (p != null && userData.favoritePosts.contains(document.id)) {
                 p.id = document.id
-                if(p.userId != userId)
-                    continue
                 posts.add(p)
             }
         }
         return posts
     }
+    //
 }

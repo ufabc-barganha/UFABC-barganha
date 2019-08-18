@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.UserDataDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.cardview_item_product.*
 
 class PostDetailActivity : AppCompatActivity() {
 
@@ -25,16 +29,20 @@ class PostDetailActivity : AppCompatActivity() {
     lateinit var userPhoto: CircleImageView
     lateinit var productPhoto: ImageView
 
+    lateinit var post: Post
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_detail)
 
-        val post = intent.getSerializableExtra(POST_EXTRA) as Post
+        post = intent.getSerializableExtra(POST_EXTRA) as Post
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setViews()
         populate(post)
+
+        interest.setOnClickListener { onInterestClicked() }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -61,5 +69,17 @@ class PostDetailActivity : AppCompatActivity() {
 
         userPhoto.setImageResource(R.drawable.ic_person)
         Picasso.get().load(post.photo).into(productPhoto)
+    }
+
+    private fun onInterestClicked(){
+        UserDataDAO.favoritePost(post, object : FirestoreDatabaseOperationListener<Void?>{
+            override fun onSuccess(result: Void?) {
+                Toast.makeText(this@PostDetailActivity, R.string.favorite_post_success, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(e: Exception) {
+                Toast.makeText(this@PostDetailActivity, R.string.favorite_post_failure, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }

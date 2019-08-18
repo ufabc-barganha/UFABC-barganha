@@ -24,7 +24,7 @@ class Post : Serializable {
                 this.postType = postType
         }
 
-        @Exclude
+        @get:Exclude
         var id: String = ""
         var userId: String = ""
 

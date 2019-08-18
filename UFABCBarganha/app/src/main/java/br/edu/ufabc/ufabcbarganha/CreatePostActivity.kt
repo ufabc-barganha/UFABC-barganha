@@ -3,7 +3,10 @@ package br.edu.ufabc.ufabcbarganha
 import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -16,13 +19,19 @@ import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_create_post.*
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
 import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.core.Path
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.nav_header_feed.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -75,27 +84,45 @@ class CreatePostActivity : AppCompatActivity() {
         }
 
         createPost.setOnClickListener{
-            PostDAO.add(createPost(), object : FirestoreDatabaseOperationListener<Void?> {
-                override fun onSuccess(result: Void?) {
-                    Toast.makeText(this@CreatePostActivity, R.string.create_post_success, Toast.LENGTH_LONG).show()
-                }
+            App.registerBroadcast(
+                photoPathReceiver,
+                IntentFilter(App.PHOTO_UPLOADED))
 
-                override fun onFailure(e: Exception) {
-                    Toast.makeText(this@CreatePostActivity, R.string.create_post_failure, Toast.LENGTH_LONG).show()
-                }
-
-            })
+            uploadPhotoUri()
         }
     }
 
-    private fun createPost(): Post{
-        val post: Post = Post()
+    private val photoPathReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.takeIf { it.hasExtra(App.PHOTO_PATH_EXTRA) }?.apply {
+                val photoPath = intent.getStringExtra(App.PHOTO_PATH_EXTRA)
+                val post = createPost(photoPath)
+
+                PostDAO.add(post, object : FirestoreDatabaseOperationListener<Void?> {
+                    override fun onSuccess(result: Void?) {
+                        Toast.makeText(this@CreatePostActivity, R.string.create_post_success, Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onFailure(e: Exception) {
+                        Toast.makeText(this@CreatePostActivity, R.string.create_post_failure, Toast.LENGTH_LONG).show()
+                    }
+
+                })
+            }
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun createPost(photoPath: String): Post{
+        uploadPhotoUri()
+
+        val post = Post()
 
         post.username = "Joao"
         post.productName = productTitle.text.toString()
-        post.photo = photoUri.toString()
+        post.photo = photoPath
         post.price = productPrice.text.toString().toDouble()
-        post.description = productDescription.toString()
+        post.description = productDescription.text.toString()
         post.postTime = Calendar.getInstance().time
         post.postType = Post.PostType.FOOD
 
@@ -149,14 +176,9 @@ class CreatePostActivity : AppCompatActivity() {
                 productPhoto.scaleType = ImageView.ScaleType.CENTER_CROP
                 productPhoto.setImageBitmap(photo)
 
-                photoUri = getImageUri(photo)
-                Log.e("igor", photoUri.toString())
-
             } else {
                 photoUri =  data.data!!
                 productPhoto.setImageURI(photoUri)
-
-                Log.e("igor", photoUri.toString())
 
                 /*if (photoURI == null)
                     Toast.makeText(
@@ -167,24 +189,39 @@ class CreatePostActivity : AppCompatActivity() {
         }
     }
 
-    fun getImageUri(image: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+    fun getDataAsBytes(): ByteArray {
+        // Get the data from an ImageView as bytes
+        val bitmap = (productPhoto.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
-        val path = MediaStore.Images.Media.insertImage(this.contentResolver, image, "Title", null)
-
-        return Uri.parse(path)
+        return baos.toByteArray()
     }
 
 
     @SuppressLint("RestrictedApi")
-    fun uploadPhotoUri(): Path {
-        // Create a storage reference from our app
-        val storageRef = FirebaseDatabase.getInstance().reference
-        // Create a reference to "mountains.jpg"
+    fun uploadPhotoUri() {
+        val storageRef = FirebaseStorage.getInstance().reference
         val photoRef = storageRef.child(photoUri.toString())
 
-        return photoRef.path
+        photoRef.putBytes(getDataAsBytes())
+            .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                return@Continuation photoRef.downloadUrl
+            }).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    with (App.appContext) {
+                        Intent(App.PHOTO_UPLOADED).apply {
+                            putExtra(App.PHOTO_PATH_EXTRA, task.result!!.toString())
+                            App.sendBroadcast(this)
+                        }
+                    }
+                }
+            }
     }
 
 

@@ -5,8 +5,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
-apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -55,5 +53,7 @@ dependencies {
 
     //Firebase
     implementation 'com.google.firebase:firebase-firestore-ktx:21.0.0'
-    implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'com.google.firebase:firebase-storage:19.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

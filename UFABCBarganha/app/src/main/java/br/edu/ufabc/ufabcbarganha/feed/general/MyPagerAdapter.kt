@@ -29,6 +29,6 @@ class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
             else -> R.string.food_title
         }
 
-        return App.context.getResources().getString(pageTitle)
+        return App.appContext.getResources().getString(pageTitle)
     }
 }

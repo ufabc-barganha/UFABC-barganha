@@ -14,7 +14,7 @@ import br.edu.ufabc.ufabcbarganha.feed.general.PostDetailActivity
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 
-class FoodAdapter(val foodList: ArrayList<Post>): RecyclerView.Adapter<FoodAdapter.ViewHolder>() {
+class FoodAdapter(val foodList: List<Post>): RecyclerView.Adapter<FoodAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
                 .inflate(R.layout.cardview_item_food, parent, false)
@@ -25,6 +25,7 @@ class FoodAdapter(val foodList: ArrayList<Post>): RecyclerView.Adapter<FoodAdapt
     override fun getItemCount(): Int = foodList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val post = foodList[position]
         holder.foodName.text = foodList[position].productName
         holder.foodPrice.text = foodList[position].price.toString()
 
@@ -32,7 +33,7 @@ class FoodAdapter(val foodList: ArrayList<Post>): RecyclerView.Adapter<FoodAdapt
 
         holder.itemView.setOnClickListener{
             val intent = Intent(it.context, PostDetailActivity::class.java)
-            intent.putExtra(App.FOOD_POSITION, position)
+            intent.putExtra(App.POST_EXTRA, post)
             ContextCompat.startActivity(it.context, intent, null)
         }
     }

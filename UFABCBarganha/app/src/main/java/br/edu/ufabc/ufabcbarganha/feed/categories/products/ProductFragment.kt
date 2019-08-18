@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
-import br.edu.ufabc.ufabcbarganha.data.ProductDAO
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
 
 
@@ -30,16 +31,16 @@ class ProductFragment : Fragment() {
     }
 
     private fun populatePosts(view: View) {
-        val posts = ArrayList<Post>()
-        val daoInst = ProductDAO.instance
-
-        for (i in 0 until daoInst.size())
-            posts.add(daoInst.getItemAt(i))
-
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.recycler_view)
-
         recyclerView?.layoutManager = LinearLayoutManager(App.context)
-        recyclerView?.adapter = ProductAdapter(posts)
+        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+            override fun onSuccess(result: List<Post>) {
+                recyclerView?.adapter = ProductAdapter(result)
+            }
+            override fun onFailure(e: Exception) {
+                //Failed to retrieve post data
+            }
+        })
     }
 
 }

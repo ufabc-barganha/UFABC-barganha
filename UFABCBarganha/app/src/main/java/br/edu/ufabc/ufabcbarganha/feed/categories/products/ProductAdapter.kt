@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -15,7 +16,7 @@ import br.edu.ufabc.ufabcbarganha.model.Post
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ProductAdapter(val posts: List<Post>): RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class ProductAdapter(val posts: List<Post>, val productFragment: ProductFragment): RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = posts.size
 
@@ -43,6 +44,7 @@ class ProductAdapter(val posts: List<Post>): RecyclerView.Adapter<ProductAdapter
             intent.putExtra(App.POST_EXTRA, post)
             ContextCompat.startActivity(it.context, intent, null)
         }
+        holder.interestButton.setOnClickListener { productFragment.favoritePost(post) }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,6 +53,7 @@ class ProductAdapter(val posts: List<Post>): RecyclerView.Adapter<ProductAdapter
         val productName: TextView = itemView.findViewById(R.id.product_name)
         val productPrice: TextView = itemView.findViewById(R.id.product_price)
         val productDescription: TextView = itemView.findViewById(R.id.product_description)
+        val interestButton: Button = itemView.findViewById(R.id.interest)
 
         val userPhoto: CircleImageView = itemView.findViewById(R.id.user_photo)
         val productPhoto: ImageView = itemView.findViewById(R.id.product_photo)

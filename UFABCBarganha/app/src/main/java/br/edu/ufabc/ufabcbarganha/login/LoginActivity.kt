@@ -36,13 +36,19 @@ class LoginActivity : AppCompatActivity() {
 
         setViews()
         setListeners()
-        var delay = 2000L
+        val delay = 2000L
         val ret = intent.getBooleanExtra(App.IS_RETURN, false)
+
+        //se vier como intent de outra atividade não faz a animação
         if(ret){
-            delay = 0
+            rellay1.visibility = View.VISIBLE
+            rellay2.visibility = View.VISIBLE
+            runVideo()
+        } else {
+            //exibe o logo por 2000 ms e mostra o login com o vídeo no fundo
+            handler.postDelayed(runnable, delay)
         }
-        //exibe o logo por 2000 ms e mostra o login com o vídeo no fundo
-        handler.postDelayed(runnable, delay)
+
 
     }
 

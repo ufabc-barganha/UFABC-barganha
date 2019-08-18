@@ -5,6 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/general_space">
 
+    <ScrollView android:id="@+id/ScrollView01"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -90,5 +94,6 @@
                 android:layout_marginTop="5dp" android:layout_alignTop="@+id/add_photo_button"/>
 
     </RelativeLayout>
+    </ScrollView>
 
 </androidx.cardview.widget.CardView>

@@ -13,15 +13,9 @@ import br.edu.ufabc.ufabcbarganha.model.Post
 class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> {
-                ProductFragment()
-            }
-            1 -> {
-                HousingFragment()
-            }
-            else -> {
-                FoodFragment()
-            }
+            0 -> ProductFragment()
+            1 -> HousingFragment()
+            else -> FoodFragment()
         }
     }
 
@@ -36,6 +30,6 @@ class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
             else -> R.string.food_title
         }
 
-        return App.context.resources.getString(pageTitle)
+        return App.appContext.resources.getString(pageTitle)
     }
 }

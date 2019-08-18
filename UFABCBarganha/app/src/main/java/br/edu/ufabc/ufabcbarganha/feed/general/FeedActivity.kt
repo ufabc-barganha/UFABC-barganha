@@ -6,20 +6,26 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import br.edu.ufabc.ufabcbarganha.*
+import br.edu.ufabc.ufabcbarganha.login.LoginActivity
 import br.edu.ufabc.ufabcbarganha.model.Post
 import br.edu.ufabc.ufabcbarganha.user.MyInterestsActivity
 import br.edu.ufabc.ufabcbarganha.user.MyPostsActivity
+import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 
 class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var currentType = Post.PostType.PRODUCT
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
@@ -56,8 +62,14 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+        val navHeader = navView.getHeaderView(0)
+
+        navHeader.findViewById<TextView>(R.id.tv_navigation_user_name).text = FirebaseUserHelper.getUserName()
+        navHeader.findViewById<TextView>(R.id.tv_navigation_user_email).text = FirebaseUserHelper.getUserEmail()
+
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
             R.string.navigation_drawer_open,
@@ -95,7 +107,12 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, SettingsActivity::class.java))
             }
             R.id.nav_logout -> {
-                // TODO: clear user info
+                mAuth.signOut()
+
+                Intent(this, LoginActivity::class.java).apply {
+                    putExtra(App.IS_RETURN, true)
+                    startActivity(this)
+                }
 
                 finish()
             }

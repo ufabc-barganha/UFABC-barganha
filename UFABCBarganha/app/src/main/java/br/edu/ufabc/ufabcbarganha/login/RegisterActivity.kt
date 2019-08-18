@@ -103,7 +103,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun goToFeed() {
-        startActivity(Intent(this, LoginActivity::class.java))
+        Intent(this, LoginActivity::class.java).apply {
+            putExtra(App.IS_RETURN, true)
+            startActivity(this)
+        }
+
         finish()
     }
 

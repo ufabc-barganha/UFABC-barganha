@@ -1,6 +1,7 @@
 package br.edu.ufabc.ufabcbarganha.model
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.Exclude
 import java.io.Serializable
 import java.util.*
 
@@ -23,7 +24,10 @@ class Post : Serializable {
                 this.postType = postType
         }
 
+        @Exclude
         var id: String = ""
+        var userId: String = ""
+
         var postType: PostType = PostType.PRODUCT
         var username: String = ""
         var productName: String = ""

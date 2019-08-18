@@ -1,7 +1,9 @@
 package br.edu.ufabc.ufabcbarganha.data.firestore
 
 import br.edu.ufabc.ufabcbarganha.model.Post
+import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
 import com.google.firebase.firestore.QuerySnapshot
+import java.lang.RuntimeException
 
 object PostDAO {
 
@@ -9,12 +11,24 @@ object PostDAO {
     const val POST_TYPE_FIELD = "postType"
 
     fun add(post: Post, callback: FirestoreDatabaseOperationListener<Void?>) {
-        val doc = BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION).document()
-        post.id = doc.id
+        val userId = FirebaseUserHelper.getUserId()
+        if(userId == null){
+            callback.onFailure(RuntimeException("Failure not logged ?"))
+        }
+        post.userId = userId!!
         BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION).add(post)
             .addOnSuccessListener { callback.onSuccess(null) }
             .addOnFailureListener { result -> callback.onFailure(result) }
+    }
 
+    fun getAllByUserId(userId: String?, callback: FirestoreDatabaseOperationListener<List<Post>>){
+        if(userId == null){
+            callback.onFailure(RuntimeException("Failure user is null"))
+        }
+        BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION)
+            .get()
+            .addOnSuccessListener { result -> callback.onSuccess(documentsToPostsFilterByUserId(result, userId!!)) }
+            .addOnFailureListener { result -> callback.onFailure(result)}
     }
 
     fun getAll(callback: FirestoreDatabaseOperationListener<List<Post>>) {
@@ -32,11 +46,26 @@ object PostDAO {
             .addOnFailureListener { result -> callback.onFailure(result)}
     }
 
-    fun documentsToPosts(qSnapshot: QuerySnapshot): List<Post> {
+    private fun documentsToPosts(qSnapshot: QuerySnapshot): List<Post> {
         val posts = mutableListOf<Post>()
         for (document in qSnapshot.documents) {
             val p = document.toObject(Post::class.java)
             if (p != null) {
+                p.id = document.id
+                posts.add(p)
+            }
+        }
+        return posts
+    }
+
+    private fun documentsToPostsFilterByUserId(qSnapshot: QuerySnapshot, userId: String): List<Post> {
+        val posts = mutableListOf<Post>()
+        for (document in qSnapshot.documents) {
+            val p = document.toObject(Post::class.java)
+            if (p != null) {
+                p.id = document.id
+                if(p.userId != userId)
+                    continue
                 posts.add(p)
             }
         }

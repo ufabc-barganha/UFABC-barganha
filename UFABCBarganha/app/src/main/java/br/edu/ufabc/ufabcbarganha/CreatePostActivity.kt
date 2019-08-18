@@ -3,6 +3,7 @@ package br.edu.ufabc.ufabcbarganha
 import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -64,6 +65,9 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     private lateinit var maps: GoogleMap
     private var positionMarker: Marker? = null
 
+    private lateinit var progressDialog: ProgressDialog
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -80,6 +84,11 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         mapFragmentManager.setListener { ScrollView01.requestDisallowInterceptTouchEvent(true)}
         supportFragmentManager.beginTransaction().replace(R.id.fragment_maps, mapFragmentManager).commitNow()
         (supportFragmentManager.findFragmentById(R.id.fragment_maps) as SupportMapFragment).getMapAsync(this)
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Enviando...")
+        progressDialog.setCancelable(false)
+        progressDialog.setInverseBackgroundForced(false)
     }
 
     private fun initializeViews() {
@@ -118,6 +127,7 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                 Toast.makeText(this@CreatePostActivity, R.string.create_post_missing_location, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            progressDialog.show()
             uploadPhotoAndPost()
         }
     }
@@ -130,11 +140,14 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
 
                 PostDAO.add(post, object : FirestoreDatabaseOperationListener<Void?> {
                     override fun onSuccess(result: Void?) {
-                        Toast.makeText(this@CreatePostActivity, R.string.create_post_success, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreatePostActivity.applicationContext, R.string.create_post_success, Toast.LENGTH_LONG).show()
+                        progressDialog.dismiss()
+                        this@CreatePostActivity.finish()
                     }
 
                     override fun onFailure(e: Exception) {
                         Toast.makeText(this@CreatePostActivity, R.string.create_post_failure, Toast.LENGTH_LONG).show()
+                        progressDialog.dismiss()
                     }
 
                 })

@@ -1,6 +1,7 @@
 package br.edu.ufabc.ufabcbarganha
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,7 +17,14 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_create_post.*
 import android.graphics.Bitmap
 import android.net.Uri
-
+import android.util.Log
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
+import br.edu.ufabc.ufabcbarganha.model.Post
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.core.Path
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 class CreatePostActivity : AppCompatActivity() {
 
@@ -25,14 +33,15 @@ class CreatePostActivity : AppCompatActivity() {
         const val IMAGE_CAPTURE_INTENT = 200
     }
 
+    private lateinit var productTitle: EditText
+    private lateinit var productPrice: EditText
+    private lateinit var localization: EditText
+    private lateinit var productDescription: MultiAutoCompleteTextView
+    private lateinit var addPhoto: FloatingActionButton
+    private lateinit var createPost: Button
+    private lateinit var productPhoto: ImageView
 
-    lateinit var title: EditText
-    lateinit var price: EditText
-    lateinit var localization: EditText
-    lateinit var description: MultiAutoCompleteTextView
-    lateinit var addPhoto: FloatingActionButton
-    lateinit var createPost: Button
-    lateinit var productPhoto: ImageView
+    private lateinit var photoUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +54,10 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        title = findViewById(R.id.create_post_title)
-        price = findViewById(R.id.create_post_price)
+        productTitle = findViewById(R.id.create_post_title)
+        productPrice = findViewById(R.id.create_post_price)
         localization = findViewById(R.id.create_post_place)
-        description = findViewById(R.id.create_post_description)
+        productDescription = findViewById(R.id.create_post_description)
         addPhoto = findViewById(R.id.add_photo_button)
         createPost = findViewById(R.id.create_post_button)
         productPhoto = findViewById(R.id.product_photo_imageview)
@@ -66,8 +75,31 @@ class CreatePostActivity : AppCompatActivity() {
         }
 
         createPost.setOnClickListener{
+            PostDAO.add(createPost(), object : FirestoreDatabaseOperationListener<Void?> {
+                override fun onSuccess(result: Void?) {
+                    Toast.makeText(this@CreatePostActivity, R.string.create_post_success, Toast.LENGTH_LONG).show()
+                }
 
+                override fun onFailure(e: Exception) {
+                    Toast.makeText(this@CreatePostActivity, R.string.create_post_failure, Toast.LENGTH_LONG).show()
+                }
+
+            })
         }
+    }
+
+    private fun createPost(): Post{
+        val post: Post = Post()
+
+        post.username = "Joao"
+        post.productName = productTitle.text.toString()
+        post.photo = photoUri.toString()
+        post.price = productPrice.text.toString().toDouble()
+        post.description = productDescription.toString()
+        post.postTime = Calendar.getInstance().time
+        post.postType = Post.PostType.FOOD
+
+        return post
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -82,7 +114,7 @@ class CreatePostActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     callCamera()
                 } else {
-                    Snackbar.make(title, R.string.camera_permission_denied_message, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(productTitle, R.string.camera_permission_denied_message, Snackbar.LENGTH_LONG).show()
                 }
                 return
             }
@@ -104,7 +136,7 @@ class CreatePostActivity : AppCompatActivity() {
         if (intent.resolveActivity(packageManager) != null)
             startActivityForResult(chooser, IMAGE_CAPTURE_INTENT)
         else
-            Snackbar.make(title, R.string.no_camera_app, Snackbar.LENGTH_LONG)
+            Snackbar.make(productTitle, R.string.no_camera_app, Snackbar.LENGTH_LONG)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,11 +145,18 @@ class CreatePostActivity : AppCompatActivity() {
         if (requestCode == IMAGE_CAPTURE_INTENT && resultCode == RESULT_OK) {
             if(data?.hasExtra("data") as Boolean) {
                 val photo = data.extras?.get("data") as Bitmap
+
                 productPhoto.scaleType = ImageView.ScaleType.CENTER_CROP
                 productPhoto.setImageBitmap(photo)
+
+                photoUri = getImageUri(photo)
+                Log.e("igor", photoUri.toString())
+
             } else {
-                val photoURI : Uri? = data.data
-                productPhoto.setImageURI(photoURI)
+                photoUri =  data.data!!
+                productPhoto.setImageURI(photoUri)
+
+                Log.e("igor", photoUri.toString())
 
                 /*if (photoURI == null)
                     Toast.makeText(
@@ -127,4 +166,26 @@ class CreatePostActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun getImageUri(image: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+        val path = MediaStore.Images.Media.insertImage(this.contentResolver, image, "Title", null)
+
+        return Uri.parse(path)
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    fun uploadPhotoUri(): Path {
+        // Create a storage reference from our app
+        val storageRef = FirebaseDatabase.getInstance().reference
+        // Create a reference to "mountains.jpg"
+        val photoRef = storageRef.child(photoUri.toString())
+
+        return photoRef.path
+    }
+
+
 }

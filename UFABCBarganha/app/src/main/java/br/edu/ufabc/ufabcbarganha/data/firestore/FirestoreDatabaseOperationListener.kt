@@ -4,5 +4,4 @@ interface FirestoreDatabaseOperationListener<K>{
 
     fun onSuccess(result: K)
     fun onFailure(e: Exception)
-
 }

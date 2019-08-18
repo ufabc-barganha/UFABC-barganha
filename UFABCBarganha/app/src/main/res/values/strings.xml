@@ -72,6 +72,17 @@
     <string name="remove_interest">Perdi o interesse =(</string>
     <string name="change_password">Mudar Senha</string>
     <string name="change_user_data">Mudar Dados</string>
+    <string name="fill_credentials">Por favor, preencha todos os campos!</string>
+    <string name="wrong_credentials">Falha no login :(</string>
+    <string name="succesful_login">Successfully logged in</string>
+    <string name="enter_credentials">Please enter the credentials!</string>
+    <string name="succesful_signup">You successfully signed in!</string>
+    <string name="an_error_occured">Ops! Un unkown error occured!</string>
+    <string name="verify_email">Por favor, verifique seu email!</string>
+    <string name="valid_email">Por favor, preencha um email valido. O acesso é restrito à comunidade acadêmica da UFABC</string>
+    <string name="different_emails">Os emails preenchidos diferem</string>
+    <string name="different_passwords">As senhas preenchidas diferem!</string>
+    <string name="empty_name">Por favor, preencha seu nome</string>
     <string name="camera_permission_denied_message">Conceda a permissão da câmera para poder tirar a foto.</string>
     <string name="no_camera_app">Não há aplicativo para fotografia.</string>
     <string name="no_image">Nenhuma imagem recebida</string>

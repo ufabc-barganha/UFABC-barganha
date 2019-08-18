@@ -79,16 +79,14 @@ class CreatePostActivity : AppCompatActivity() {
 
         addPhoto.setOnClickListener{
             val cameraPermission = checkPermissions(Manifest.permission.CAMERA)
-            if(cameraPermission)callCamera()
-            else ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_PERMISSIONS)
+            if(cameraPermission)
+                callCamera()
+            else
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_PERMISSIONS)
         }
 
         createPost.setOnClickListener{
-            App.registerBroadcast(
-                photoPathReceiver,
-                IntentFilter(App.PHOTO_UPLOADED))
-
-            uploadPhotoUri()
+            uploadPhotoAndPost()
         }
     }
 
@@ -114,8 +112,6 @@ class CreatePostActivity : AppCompatActivity() {
 
     @SuppressLint("RestrictedApi")
     private fun createPost(photoPath: String): Post{
-        uploadPhotoUri()
-
         val post = Post()
 
         post.username = "Joao"
@@ -124,7 +120,7 @@ class CreatePostActivity : AppCompatActivity() {
         post.price = productPrice.text.toString().toDouble()
         post.description = productDescription.text.toString()
         post.postTime = Calendar.getInstance().time
-        post.postType = Post.PostType.FOOD
+        post.postType = Post.PostType.PRODUCT
 
         return post
     }
@@ -200,9 +196,11 @@ class CreatePostActivity : AppCompatActivity() {
 
 
     @SuppressLint("RestrictedApi")
-    fun uploadPhotoUri() {
+    fun uploadPhotoAndPost() {
         val storageRef = FirebaseStorage.getInstance().reference
         val photoRef = storageRef.child(photoUri.toString())
+
+        App.registerBroadcast(photoPathReceiver, IntentFilter(App.PHOTO_UPLOADED))
 
         photoRef.putBytes(getDataAsBytes())
             .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->

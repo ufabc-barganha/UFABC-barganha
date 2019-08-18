@@ -26,6 +26,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
 import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
+import br.edu.ufabc.ufabcbarganha.feed.general.FeedActivity
 import br.edu.ufabc.ufabcbarganha.map.WorkaroundMapFragment
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.google.android.gms.tasks.Continuation
@@ -142,7 +143,10 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                     override fun onSuccess(result: Void?) {
                         Toast.makeText(this@CreatePostActivity.applicationContext, R.string.create_post_success, Toast.LENGTH_LONG).show()
                         progressDialog.dismiss()
-                        this@CreatePostActivity.finish()
+                        val intent = Intent(this@CreatePostActivity, FeedActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        startActivity(intent)
+
                     }
 
                     override fun onFailure(e: Exception) {

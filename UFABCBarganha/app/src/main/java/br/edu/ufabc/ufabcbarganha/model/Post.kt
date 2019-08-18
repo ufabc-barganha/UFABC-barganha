@@ -6,7 +6,10 @@ import java.util.*
 
 class Post : Serializable {
 
-        enum class PostType { FOOD, HOUSING, PRODUCT }
+        enum class PostType(val value: String) { PRODUCT("Produtos"), HOUSING("Moradia"), FOOD("Comida");
+
+                override fun toString() = value
+        }
 
         constructor()
 

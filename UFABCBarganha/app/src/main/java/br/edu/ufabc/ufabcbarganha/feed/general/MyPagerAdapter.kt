@@ -8,18 +8,25 @@ import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.feed.categories.food.FoodFragment
 import br.edu.ufabc.ufabcbarganha.feed.categories.housing.HousingFragment
 import br.edu.ufabc.ufabcbarganha.feed.categories.products.ProductFragment
+import br.edu.ufabc.ufabcbarganha.model.Post
 
 class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> ProductFragment()
-            1 -> HousingFragment()
-            else -> FoodFragment()
+            0 -> {
+                ProductFragment()
+            }
+            1 -> {
+                HousingFragment()
+            }
+            else -> {
+                FoodFragment()
+            }
         }
     }
 
     override fun getCount(): Int {
-        return 3
+        return Post.PostType.values().count()
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -29,6 +36,6 @@ class MyPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
             else -> R.string.food_title
         }
 
-        return App.context.getResources().getString(pageTitle)
+        return App.context.resources.getString(pageTitle)
     }
 }

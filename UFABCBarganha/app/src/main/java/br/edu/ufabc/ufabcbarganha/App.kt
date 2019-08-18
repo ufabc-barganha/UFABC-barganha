@@ -11,6 +11,7 @@ class App: Application() {
 
         const val POST_EXTRA = "extra_post"
         const val IS_RETURN = "isReturn"
+        const val POST_TYPE_EXTRA = "post_type_extra"
     }
 
     override fun onCreate() {

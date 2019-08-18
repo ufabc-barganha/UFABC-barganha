@@ -40,6 +40,7 @@ class CreatePostActivity : AppCompatActivity() {
     private lateinit var addPhoto: FloatingActionButton
     private lateinit var createPost: Button
     private lateinit var productPhoto: ImageView
+    private lateinit var postType: Spinner
 
     private lateinit var photoUri: Uri
 
@@ -51,6 +52,10 @@ class CreatePostActivity : AppCompatActivity() {
         initializeViews()
         setListeners()
 
+        if(intent.hasExtra(App.POST_TYPE_EXTRA))
+            postType.setSelection((postType.adapter as ArrayAdapter<Post.PostType>)
+                .getPosition(intent.extras?.get(App.POST_TYPE_EXTRA) as Post.PostType))
+
     }
 
     private fun initializeViews() {
@@ -61,6 +66,12 @@ class CreatePostActivity : AppCompatActivity() {
         addPhoto = findViewById(R.id.add_photo_button)
         createPost = findViewById(R.id.create_post_button)
         productPhoto = findViewById(R.id.product_photo_imageview)
+        postType = findViewById(R.id.post_type)
+
+        postType.adapter = ArrayAdapter(
+            this,
+            R.layout.spinner_layout,
+            Post.PostType.values())
     }
 
     private fun setListeners() {
@@ -89,7 +100,7 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun createPost(): Post{
-        val post: Post = Post()
+        val post = Post()
 
         post.username = "Joao"
         post.productName = productTitle.text.toString()
@@ -97,7 +108,7 @@ class CreatePostActivity : AppCompatActivity() {
         post.price = productPrice.text.toString().toDouble()
         post.description = productDescription.toString()
         post.postTime = Calendar.getInstance().time
-        post.postType = Post.PostType.FOOD
+        post.postType = postType.selectedItem as Post.PostType
 
         return post
     }

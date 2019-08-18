@@ -21,17 +21,14 @@ import kotlinx.android.synthetic.main.activity_create_post.*
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.util.Log
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
 import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.core.Path
+import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import kotlinx.android.synthetic.main.nav_header_feed.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -114,7 +111,7 @@ class CreatePostActivity : AppCompatActivity() {
     private fun createPost(photoPath: String): Post{
         val post = Post()
 
-        post.username = "Joao"
+        post.username = FirebaseUserHelper.getUserEmail()
         post.productName = productTitle.text.toString()
         post.photo = photoPath
         post.price = productPrice.text.toString().toDouble()

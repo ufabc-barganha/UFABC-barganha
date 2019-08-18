@@ -9,6 +9,7 @@ import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
 import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
+import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
 import kotlinx.android.synthetic.main.activity_create_post.*
 
 class MyPostsActivity : AppCompatActivity() {
@@ -29,7 +30,7 @@ class MyPostsActivity : AppCompatActivity() {
 
         recyclerView?.layoutManager = LinearLayoutManager(App.appContext)
 
-        PostDAO.getAll( object : FirestoreDatabaseOperationListener<List<Post>> {
+        PostDAO.getAllByUserId(FirebaseUserHelper.getUserId(), object : FirestoreDatabaseOperationListener<List<Post>> {
             override fun onSuccess(result: List<Post>) {
                 recyclerView?.adapter = MyPostsAdapter(result)
             }

@@ -21,8 +21,6 @@ object FirebaseUserHelper{
         return getAuth().currentUser?.uid
     }
 
-    
-
     fun getUserName(): String{
         return getAuth().currentUser.let { if(it == null || it.displayName == null) "" else it.displayName!! }
     }

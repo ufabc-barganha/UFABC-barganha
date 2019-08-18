@@ -26,7 +26,7 @@ object PostDAO {
 
     fun getAllByType(postType: Post.PostType, callback: FirestoreDatabaseOperationListener<List<Post>>){
         BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION)
-//            .whereEqualTo(POST_TYPE_FIELD, postType)
+            .whereEqualTo(POST_TYPE_FIELD, postType.toString())
             .get()
             .addOnSuccessListener { result -> callback.onSuccess(documentsToPosts(result)) }
             .addOnFailureListener { result -> callback.onFailure(result)}

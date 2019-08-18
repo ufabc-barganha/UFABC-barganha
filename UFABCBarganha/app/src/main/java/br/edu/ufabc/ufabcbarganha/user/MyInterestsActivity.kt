@@ -28,7 +28,7 @@ class MyInterestsActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(App.context)
 
-        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+        PostDAO.getAll( object : FirestoreDatabaseOperationListener<List<Post>> {
             override fun onSuccess(result: List<Post>) {
                 recyclerView?.adapter = MyInterestsAdapter(result)
             }

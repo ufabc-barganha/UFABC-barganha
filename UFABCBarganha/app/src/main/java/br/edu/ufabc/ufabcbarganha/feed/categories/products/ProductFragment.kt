@@ -33,7 +33,7 @@ class ProductFragment : Fragment() {
     private fun populatePosts(view: View) {
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(App.context)
-        PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>> {
+        PostDAO.getAllByType(Post.PostType.PRODUCT, object : FirestoreDatabaseOperationListener<List<Post>> {
             override fun onSuccess(result: List<Post>) {
                 recyclerView?.adapter = ProductAdapter(result)
             }

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import br.edu.ufabc.ufabcbarganha.*
+import br.edu.ufabc.ufabcbarganha.login.LoginActivity
 import br.edu.ufabc.ufabcbarganha.user.MyInterestsActivity
 import br.edu.ufabc.ufabcbarganha.user.MyPostsActivity
 import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
@@ -82,6 +83,12 @@ class FeedActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_logout -> {
                 mAuth.signOut()
+
+                Intent(this, LoginActivity::class.java).apply {
+                    putExtra(App.IS_RETURN, true)
+                    startActivity(this)
+                }
+
                 finish()
             }
         }

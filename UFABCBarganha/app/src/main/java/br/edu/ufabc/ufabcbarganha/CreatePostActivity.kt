@@ -21,18 +21,29 @@ import kotlinx.android.synthetic.main.activity_create_post.*
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.view.View
+import androidx.core.content.ContextCompat
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
 import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
+import br.edu.ufabc.ufabcbarganha.map.WorkaroundMapFragment
 import br.edu.ufabc.ufabcbarganha.model.Post
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.cardview_create_post.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class CreatePostActivity : AppCompatActivity() {
+class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener, AdapterView.OnItemSelectedListener {
 
     private companion object Constants {
         const val CAMERA_REQUEST_PERMISSIONS = 100
@@ -50,6 +61,9 @@ class CreatePostActivity : AppCompatActivity() {
 
     private lateinit var photoUri: Uri
 
+    private lateinit var maps: GoogleMap
+    private var positionMarker: Marker? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -62,6 +76,10 @@ class CreatePostActivity : AppCompatActivity() {
             postType.setSelection((postType.adapter as ArrayAdapter<Post.PostType>)
                 .getPosition(intent.extras?.get(App.POST_TYPE_EXTRA) as Post.PostType))
 
+        var mapFragmentManager = WorkaroundMapFragment()
+        mapFragmentManager.setListener { ScrollView01.requestDisallowInterceptTouchEvent(true)}
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_maps, mapFragmentManager).commitNow()
+        (supportFragmentManager.findFragmentById(R.id.fragment_maps) as SupportMapFragment).getMapAsync(this)
     }
 
     private fun initializeViews() {
@@ -78,6 +96,8 @@ class CreatePostActivity : AppCompatActivity() {
             this,
             R.layout.spinner_layout,
             Post.PostType.values())
+
+        postType.onItemSelectedListener = this
     }
 
     private fun setListeners() {
@@ -94,6 +114,10 @@ class CreatePostActivity : AppCompatActivity() {
         }
 
         createPost.setOnClickListener{
+            if(postType.selectedItem == Post.PostType.HOUSING && positionMarker == null ){
+                Toast.makeText(this@CreatePostActivity, R.string.create_post_missing_location, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             uploadPhotoAndPost()
         }
     }
@@ -130,31 +154,17 @@ class CreatePostActivity : AppCompatActivity() {
         post.postTime = Calendar.getInstance().time
         post.postType = postType.selectedItem as Post.PostType
 
+        if(postType.selectedItem == Post.PostType.HOUSING){
+            post.lat = positionMarker!!.position.latitude
+            post.lng = positionMarker!!.position.longitude
+        }
+
         return post
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun checkPermissions(permission: String): Boolean {
         return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            CAMERA_REQUEST_PERMISSIONS -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    callCamera()
-                } else {
-                    Snackbar.make(productTitle, R.string.camera_permission_denied_message, Snackbar.LENGTH_LONG).show()
-                }
-                return
-            }
-
-            else -> {
-                // Ignore all other requests.
-            }
-
-        }
     }
 
     fun callCamera(){
@@ -228,6 +238,54 @@ class CreatePostActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+        if(parent!!.getItemAtPosition(pos).equals(Post.PostType.HOUSING)){
+            fragment_maps.visibility = View.VISIBLE
+        } else{
+            fragment_maps.visibility = View.GONE
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    //------------------------------------- Map -------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------//
+    override fun onMapReady(googleMap: GoogleMap?) {
+        this.maps = googleMap!!
+        maps.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(-23.644926, -46.527625), 16f)) //UFABC SANTo ANDRE
+        funEnableMapLocation()
+
+        //callbacks
+        maps.setOnMapClickListener(this)
+    }
+
+    override fun onMapClick(pos: LatLng?) {
+        if(positionMarker == null){
+            positionMarker = maps.addMarker(MarkerOptions().position(pos!!))
+        }
+        else{
+            positionMarker!!.position = pos
+        }
+    }
+
+    //------------------------------------- Maps Location Auxiliar -------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------//
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        funEnableMapLocation()
+    }
+
+
+
+    private fun funEnableMapLocation(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+
+        maps.isMyLocationEnabled = true
     }
 
 

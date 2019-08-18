@@ -93,6 +93,7 @@
     <string name="favorite_post_success">Sucesso ao favoritar post</string>
     <string name="unfavorite_post_failure">Erro ao desfavoritar post</string>
     <string name="unfavorite_post_success">Sucesso ao desfavoritar post</string>
+    <string name="create_post_missing_location">Você precisa selecionar uma localização</string>
 
 
 

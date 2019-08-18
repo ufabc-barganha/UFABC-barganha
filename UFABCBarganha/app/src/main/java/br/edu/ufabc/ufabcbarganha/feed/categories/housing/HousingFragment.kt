@@ -101,7 +101,6 @@ class HousingFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         //for( post: Post in housings){
         for (i in 0 until housings.size){
             var marker = maps.addMarker(MarkerOptions().position(housings[i].retrieveLatLng()!!))
-            housings[i].id = i.toString()
             marker.tag = housings[i]
         }
     }

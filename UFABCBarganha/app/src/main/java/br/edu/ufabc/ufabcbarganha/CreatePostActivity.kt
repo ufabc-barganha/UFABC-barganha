@@ -1,8 +1,12 @@
 package br.edu.ufabc.ufabcbarganha
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -15,8 +19,21 @@ import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_create_post.*
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-
+import android.util.Log
+import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
+import br.edu.ufabc.ufabcbarganha.model.Post
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.core.Path
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.nav_header_feed.*
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 class CreatePostActivity : AppCompatActivity() {
 
@@ -25,14 +42,15 @@ class CreatePostActivity : AppCompatActivity() {
         const val IMAGE_CAPTURE_INTENT = 200
     }
 
+    private lateinit var productTitle: EditText
+    private lateinit var productPrice: EditText
+    private lateinit var localization: EditText
+    private lateinit var productDescription: MultiAutoCompleteTextView
+    private lateinit var addPhoto: FloatingActionButton
+    private lateinit var createPost: Button
+    private lateinit var productPhoto: ImageView
 
-    lateinit var title: EditText
-    lateinit var price: EditText
-    lateinit var localization: EditText
-    lateinit var description: MultiAutoCompleteTextView
-    lateinit var addPhoto: FloatingActionButton
-    lateinit var createPost: Button
-    lateinit var productPhoto: ImageView
+    private lateinit var photoUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +63,10 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        title = findViewById(R.id.create_post_title)
-        price = findViewById(R.id.create_post_price)
+        productTitle = findViewById(R.id.create_post_title)
+        productPrice = findViewById(R.id.create_post_price)
         localization = findViewById(R.id.create_post_place)
-        description = findViewById(R.id.create_post_description)
+        productDescription = findViewById(R.id.create_post_description)
         addPhoto = findViewById(R.id.add_photo_button)
         createPost = findViewById(R.id.create_post_button)
         productPhoto = findViewById(R.id.product_photo_imageview)
@@ -61,13 +79,50 @@ class CreatePostActivity : AppCompatActivity() {
 
         addPhoto.setOnClickListener{
             val cameraPermission = checkPermissions(Manifest.permission.CAMERA)
-            if(cameraPermission)callCamera()
-            else ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_PERMISSIONS)
+            if(cameraPermission)
+                callCamera()
+            else
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_PERMISSIONS)
         }
 
         createPost.setOnClickListener{
-
+            uploadPhotoAndPost()
         }
+    }
+
+    private val photoPathReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.takeIf { it.hasExtra(App.PHOTO_PATH_EXTRA) }?.apply {
+                val photoPath = intent.getStringExtra(App.PHOTO_PATH_EXTRA)
+                val post = createPost(photoPath)
+
+                PostDAO.add(post, object : FirestoreDatabaseOperationListener<Void?> {
+                    override fun onSuccess(result: Void?) {
+                        Toast.makeText(this@CreatePostActivity, R.string.create_post_success, Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onFailure(e: Exception) {
+                        Toast.makeText(this@CreatePostActivity, R.string.create_post_failure, Toast.LENGTH_LONG).show()
+                    }
+
+                })
+            }
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun createPost(photoPath: String): Post{
+        val post = Post()
+
+        post.username = "Joao"
+        post.productName = productTitle.text.toString()
+        post.photo = photoPath
+        post.price = productPrice.text.toString().toDouble()
+        post.description = productDescription.text.toString()
+        post.postTime = Calendar.getInstance().time
+        post.postType = Post.PostType.PRODUCT
+
+        return post
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -82,7 +137,7 @@ class CreatePostActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     callCamera()
                 } else {
-                    Snackbar.make(title, R.string.camera_permission_denied_message, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(productTitle, R.string.camera_permission_denied_message, Snackbar.LENGTH_LONG).show()
                 }
                 return
             }
@@ -104,7 +159,7 @@ class CreatePostActivity : AppCompatActivity() {
         if (intent.resolveActivity(packageManager) != null)
             startActivityForResult(chooser, IMAGE_CAPTURE_INTENT)
         else
-            Snackbar.make(title, R.string.no_camera_app, Snackbar.LENGTH_LONG)
+            Snackbar.make(productTitle, R.string.no_camera_app, Snackbar.LENGTH_LONG)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,11 +168,13 @@ class CreatePostActivity : AppCompatActivity() {
         if (requestCode == IMAGE_CAPTURE_INTENT && resultCode == RESULT_OK) {
             if(data?.hasExtra("data") as Boolean) {
                 val photo = data.extras?.get("data") as Bitmap
+
                 productPhoto.scaleType = ImageView.ScaleType.CENTER_CROP
                 productPhoto.setImageBitmap(photo)
+
             } else {
-                val photoURI : Uri? = data.data
-                productPhoto.setImageURI(photoURI)
+                photoUri =  data.data!!
+                productPhoto.setImageURI(photoUri)
 
                 /*if (photoURI == null)
                     Toast.makeText(
@@ -127,4 +184,43 @@ class CreatePostActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun getDataAsBytes(): ByteArray {
+        // Get the data from an ImageView as bytes
+        val bitmap = (productPhoto.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+
+        return baos.toByteArray()
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    fun uploadPhotoAndPost() {
+        val storageRef = FirebaseStorage.getInstance().reference
+        val photoRef = storageRef.child(photoUri.toString())
+
+        App.registerBroadcast(photoPathReceiver, IntentFilter(App.PHOTO_UPLOADED))
+
+        photoRef.putBytes(getDataAsBytes())
+            .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                return@Continuation photoRef.downloadUrl
+            }).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    with (App.appContext) {
+                        Intent(App.PHOTO_UPLOADED).apply {
+                            putExtra(App.PHOTO_PATH_EXTRA, task.result!!.toString())
+                            App.sendBroadcast(this)
+                        }
+                    }
+                }
+            }
+    }
+
+
 }

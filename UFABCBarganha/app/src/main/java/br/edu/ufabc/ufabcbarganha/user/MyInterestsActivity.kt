@@ -26,7 +26,7 @@ class MyInterestsActivity : AppCompatActivity() {
 
     private fun populatePosts() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView?.layoutManager = LinearLayoutManager(App.context)
+        recyclerView?.layoutManager = LinearLayoutManager(App.appContext)
 
         PostDAO.getAll( object : FirestoreDatabaseOperationListener<List<Post>> {
             override fun onSuccess(result: List<Post>) {

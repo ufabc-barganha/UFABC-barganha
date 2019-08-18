@@ -13,7 +13,6 @@ import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
 import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
-import kotlin.collections.ArrayList
 
 class FoodFragment : Fragment() {
 
@@ -30,7 +29,7 @@ class FoodFragment : Fragment() {
 
     private fun populateFoodPosts(view: View) {
         val recyclerView = getView()?.findViewById<RecyclerView>(R.id.food_recycler_view)
-        recyclerView?.layoutManager = GridLayoutManager(App.context, 2)
+        recyclerView?.layoutManager = GridLayoutManager(App.appContext, 2)
 
         PostDAO.getAllByType(Post.PostType.FOOD, object : FirestoreDatabaseOperationListener<List<Post>>{
             override fun onSuccess(result: List<Post>) {

@@ -15,7 +15,6 @@ import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.activity_create_post.*
@@ -56,7 +55,7 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     private lateinit var productPrice: EditText
     private lateinit var localization: EditText
     private lateinit var productDescription: MultiAutoCompleteTextView
-    private lateinit var addPhoto: FloatingActionButton
+    private lateinit var addPhoto: Button
     private lateinit var createPost: Button
     private lateinit var productPhoto: ImageView
     private lateinit var postType: Spinner
@@ -207,6 +206,8 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                 productPhoto.scaleType = ImageView.ScaleType.CENTER_CROP
                 productPhoto.setImageBitmap(photo)
 
+                photoUri = getImageUri(photo)
+
             } else {
                 photoUri =  data.data!!
                 productPhoto.setImageURI(photoUri)
@@ -220,13 +221,22 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun getDataAsBytes(): ByteArray {
+    private fun getDataAsBytes(): ByteArray {
         // Get the data from an ImageView as bytes
         val bitmap = (productPhoto.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
         return baos.toByteArray()
+    }
+
+    private fun getImageUri(image: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+        val path = MediaStore.Images.Media.insertImage(this.contentResolver, image, "Title", null)
+
+        return Uri.parse(path)
     }
 
 

@@ -27,7 +27,7 @@ class FoodAdapter(val foodList: List<Post>): RecyclerView.Adapter<FoodAdapter.Vi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = foodList[position]
         holder.foodName.text = foodList[position].productName
-        holder.foodPrice.text = foodList[position].price.toString()
+        holder.foodPrice.text = String.format("R$ %.2f", post.price)
 
         Picasso.get().load(foodList[position].photo).into(holder.foodPhoto)
 

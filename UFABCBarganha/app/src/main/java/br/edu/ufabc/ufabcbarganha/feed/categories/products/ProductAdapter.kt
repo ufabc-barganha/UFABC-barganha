@@ -1,13 +1,18 @@
 package br.edu.ufabc.ufabcbarganha.feed.categories.products
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
@@ -44,7 +49,27 @@ class ProductAdapter(val posts: List<Post>, val productFragment: ProductFragment
             intent.putExtra(App.POST_EXTRA, post)
             ContextCompat.startActivity(it.context, intent, null)
         }
+
         holder.interestButton.setOnClickListener { productFragment.favoritePost(post) }
+
+        holder.bargainButton.setOnClickListener {
+            val contact = "+55 1752"
+            val url = "https://api.whatsapp.com/send?phone=" + contact
+
+            try {
+                val pm = App.appContext.packageManager
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+
+                Intent(Intent.ACTION_VIEW).apply {
+                    setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    data = Uri.parse(url)
+                    App.appContext.startActivity(this)
+                }
+
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(App.appContext, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -54,6 +79,7 @@ class ProductAdapter(val posts: List<Post>, val productFragment: ProductFragment
         val productPrice: TextView = itemView.findViewById(R.id.product_price)
         val productDescription: TextView = itemView.findViewById(R.id.product_description)
         val interestButton: Button = itemView.findViewById(R.id.interest)
+        val bargainButton: Button = itemView.findViewById(R.id.bargain)
 
         val userPhoto: CircleImageView = itemView.findViewById(R.id.user_photo)
         val productPhoto: ImageView = itemView.findViewById(R.id.product_photo)

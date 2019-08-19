@@ -1,5 +1,8 @@
 package br.edu.ufabc.ufabcbarganha.user
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +43,7 @@ class MyInterestsActivity : AppCompatActivity() {
         })
     }
 
-     fun unfavoritePost(post: Post) {
+    fun unfavoritePost(post: Post) {
         UserDataDAO.unfavoritePost(post, object : FirestoreDatabaseOperationListener<Void?> {
             override fun onSuccess(result: Void?) {
                 Toast.makeText(this@MyInterestsActivity, R.string.unfavorite_post_success, Toast.LENGTH_LONG).show()
@@ -51,6 +54,25 @@ class MyInterestsActivity : AppCompatActivity() {
                 Toast.makeText(this@MyInterestsActivity, R.string.unfavorite_post_failure, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    fun bargainPost() {
+        val contact = "+55 1752"
+        val url = "https://api.whatsapp.com/send?phone=" + contact
+
+        try {
+            val pm = App.appContext.packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+
+            Intent(Intent.ACTION_VIEW).apply {
+                setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                data = Uri.parse(url)
+                App.appContext.startActivity(this)
+            }
+
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(App.appContext, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

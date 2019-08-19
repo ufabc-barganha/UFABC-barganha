@@ -1,5 +1,8 @@
 package br.edu.ufabc.ufabcbarganha.feed.general
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -43,6 +46,7 @@ class PostDetailActivity : AppCompatActivity() {
         populate(post)
 
         interest.setOnClickListener { onInterestClicked() }
+        bargain.setOnClickListener { onBargainClicked() }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -58,6 +62,7 @@ class PostDetailActivity : AppCompatActivity() {
         productDescription = findViewById(R.id.product_description)
         userPhoto = findViewById(R.id.user_photo)
         productPhoto = findViewById(R.id.product_photo)
+        bargain
     }
 
     private fun populate(post: Post) {
@@ -81,5 +86,25 @@ class PostDetailActivity : AppCompatActivity() {
                 Toast.makeText(this@PostDetailActivity, R.string.favorite_post_failure, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun onBargainClicked() {
+        val contact = "+55 1752"
+        val url = "https://api.whatsapp.com/send?phone=" + contact
+
+        try {
+            val pm = packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+
+            Intent(Intent.ACTION_VIEW).apply {
+                setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                data = Uri.parse(url)
+                startActivity(this)
+            }
+
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show()
+        }
+
     }
 }

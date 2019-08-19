@@ -45,8 +45,9 @@ class MyInterestsAdapter(val posts: List<Post>, val activity: MyInterestsActivit
             ContextCompat.startActivity(it.context, intent, null)
         }
         // My Interest
-        holder.itemView.findViewById<Button>(R.id.interest).setText(R.string.remove_interest)
-        holder.itemView.findViewById<Button>(R.id.interest).setOnClickListener { activity.unfavoritePost(post) }
+        holder.interestButton.setText(R.string.remove_interest)
+        holder.interestButton.setOnClickListener { activity.unfavoritePost(post) }
+        holder.bargainButton.setOnClickListener { activity.bargainPost() }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -55,6 +56,9 @@ class MyInterestsAdapter(val posts: List<Post>, val activity: MyInterestsActivit
         val productName: TextView = itemView.findViewById(R.id.product_name)
         val productPrice: TextView = itemView.findViewById(R.id.product_price)
         val productDescription: TextView = itemView.findViewById(R.id.product_description)
+
+        val interestButton: Button = itemView.findViewById(R.id.interest)
+        val bargainButton: Button = itemView.findViewById(R.id.bargain)
 
         val userPhoto: CircleImageView = itemView.findViewById(R.id.user_photo)
         val productPhoto: ImageView = itemView.findViewById(R.id.product_photo)

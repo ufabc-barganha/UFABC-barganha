@@ -61,6 +61,7 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     private lateinit var phone: EditText
 
     private lateinit var photoUri: Uri
+    private var isPhotoDone: Boolean = false
 
     private lateinit var maps: GoogleMap
     private var positionMarker: Marker? = null
@@ -116,15 +117,22 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         addPhoto.setOnClickListener{
-            val cameraPermission = checkPermissions(Manifest.permission.CAMERA)
-            if(cameraPermission)
+
+            val permissions = checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            if(permissions)
                 callCamera()
             else
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_PERMISSIONS)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), CAMERA_REQUEST_PERMISSIONS)
         }
 
         createPost.setOnClickListener{
-            if(postType.selectedItem == Post.PostType.HOUSING && positionMarker == null ){
+            if (productTitle.text.toString().isEmpty() || productPrice.text.toString().isEmpty() || phone.text.toString().isEmpty() ||
+                    productDescription.text.toString().isEmpty() || !isPhotoDone) {
+                Toast.makeText(this@CreatePostActivity, R.string.create_post_missing_fields, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (postType.selectedItem == Post.PostType.HOUSING && positionMarker == null ){
                 Toast.makeText(this@CreatePostActivity, R.string.create_post_missing_location, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -181,8 +189,9 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    private fun checkPermissions(permission: String): Boolean {
-        return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    private fun checkPermissions(permissionCamera: String, permissionExternalStorage: String): Boolean {
+        return checkSelfPermission(permissionCamera) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(permissionExternalStorage) == PackageManager.PERMISSION_GRANTED
     }
 
     fun callCamera(){
@@ -202,7 +211,9 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == IMAGE_CAPTURE_INTENT && resultCode == RESULT_OK) {
-            if(data?.hasExtra("data") as Boolean) {
+            isPhotoDone = true
+
+            if (data?.hasExtra("data") as Boolean) {
                 val photo = data.extras?.get("data") as Bitmap
 
                 productPhoto.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -213,12 +224,6 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             } else {
                 photoUri =  data.data!!
                 productPhoto.setImageURI(photoUri)
-
-                /*if (photoURI == null)
-                    Toast.makeText(
-                        this,
-                        getString(R.string.no_image),
-                        Toast.LENGTH_LONG).show()*/
             }
         }
     }

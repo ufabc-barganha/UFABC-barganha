@@ -104,6 +104,7 @@
     <string name="remove_post">Remover</string>
     <string name="removed_with_success">Post Removido</string>
     <string name="remove_failure">Falha ao remover</string>
+    <string name="create_post_missing_fields">Por favor, preencha todos os campos e anexe sua foto</string>
 
 
 </resources>

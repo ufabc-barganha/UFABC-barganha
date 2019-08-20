@@ -77,23 +77,23 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/general_space"
                 android:layout_alignParentRight="true"
-                app:srcCompat="@android:drawable/ic_input_add"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/create_post_description"
-                android:layout_marginTop="@dimen/general_space"/>
+                android:layout_marginTop="30dp"/>
 
         <Button
                 android:id="@+id/add_photo_button"
                 android:text="@string/add_photo"
                 app:backgroundTint="@color/colorPrimaryDark"
                 android:tint="@color/white"
+                android:padding="@dimen/general_space"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/create_post_button"
                 android:layout_alignLeft="@id/create_post_button"
                 app:srcCompat="@android:drawable/ic_input_add"
                 android:layout_alignStart="@id/create_post_button"
-                android:layout_marginTop="@dimen/general_space"/>
+                android:layout_marginTop="30dp"/>
 
         <ImageView
                 android:id="@+id/product_photo_imageview"
@@ -107,15 +107,22 @@
                 android:layout_alignBottom="@id/add_photo_button"
                 android:layout_toLeftOf="@id/add_photo_button"
                 android:layout_toStartOf="@id/add_photo_button"
-                android:layout_marginRight="@dimen/general_space"/>
+                android:layout_marginRight="@dimen/general_space"
+                android:layout_marginEnd="@dimen/general_space"/>
 
 
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp" android:layout_marginTop="8dp"
-                android:layout_below="@+id/create_post_description" android:id="@+id/fragment_maps"
-                android:visibility="gone">
-
+                android:layout_height="match_parent"
+                android:layout_below="@+id/create_post_description"
+                android:id="@+id/fragment_maps"
+                android:visibility="gone"
+                android:layout_alignTop="@id/create_post_button"
+                android:layout_alignBottom="@id/add_photo_button"
+                android:layout_toLeftOf="@id/add_photo_button"
+                android:layout_toStartOf="@id/add_photo_button"
+                android:layout_marginRight="@dimen/general_space"
+                android:layout_marginEnd="@dimen/general_space">
         </FrameLayout>
 
     </RelativeLayout>

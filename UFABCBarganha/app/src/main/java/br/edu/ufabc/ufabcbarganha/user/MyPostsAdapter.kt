@@ -41,7 +41,7 @@ class MyPostsAdapter(val posts: List<Post>): RecyclerView.Adapter<MyPostsAdapter
 
         holder.itemView.setOnClickListener{
             val intent = Intent(it.context, PostDetailActivity::class.java)
-            intent.putExtra(App.POST_EXTRA, position)
+            intent.putExtra(App.POST_EXTRA, post)
             ContextCompat.startActivity(it.context, intent, null)
         }
 

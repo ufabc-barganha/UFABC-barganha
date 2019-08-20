@@ -89,7 +89,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun onBargainClicked() {
-        val contact = "+55 1752"
+        val contact = post.phone
         val url = "https://api.whatsapp.com/send?phone=" + contact
 
         try {

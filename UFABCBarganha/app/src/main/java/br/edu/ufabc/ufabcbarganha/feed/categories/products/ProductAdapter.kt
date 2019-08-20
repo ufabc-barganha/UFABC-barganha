@@ -53,7 +53,7 @@ class ProductAdapter(val posts: List<Post>, val productFragment: ProductFragment
         holder.interestButton.setOnClickListener { productFragment.favoritePost(post) }
 
         holder.bargainButton.setOnClickListener {
-            val contact = "+55 1752"
+            val contact = post.phone
             val url = "https://api.whatsapp.com/send?phone=" + contact
 
             try {

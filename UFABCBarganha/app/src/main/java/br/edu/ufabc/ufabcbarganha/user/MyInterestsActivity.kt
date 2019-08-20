@@ -56,8 +56,8 @@ class MyInterestsActivity : AppCompatActivity() {
         })
     }
 
-    fun bargainPost() {
-        val contact = "+55 1752"
+    fun bargainPost(post: Post) {
+        val contact = post.phone
         val url = "https://api.whatsapp.com/send?phone=" + contact
 
         try {

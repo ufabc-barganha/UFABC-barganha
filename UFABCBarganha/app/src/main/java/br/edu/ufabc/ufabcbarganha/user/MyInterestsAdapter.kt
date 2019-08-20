@@ -47,7 +47,7 @@ class MyInterestsAdapter(val posts: List<Post>, val activity: MyInterestsActivit
         // My Interest
         holder.interestButton.setText(R.string.remove_interest)
         holder.interestButton.setOnClickListener { activity.unfavoritePost(post) }
-        holder.bargainButton.setOnClickListener { activity.bargainPost() }
+        holder.bargainButton.setOnClickListener { activity.bargainPost(post) }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -99,6 +99,8 @@
 
     <string name="empty_mail">Por favor, preencha seu email</string>
     <string name="add_photo">Adicionar Foto</string>
+    <string name="hint_phone">Telefone</string>
+    <string name="create_post_phone">Telefone</string>
 
 
 </resources>

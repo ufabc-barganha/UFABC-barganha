@@ -36,9 +36,9 @@
             android:layout_below="@id/create_post_title"/>
 
         <EditText
-            android:id="@+id/create_post_place"
-            android:inputType="textPostalAddress"
-            android:hint="@string/create_post_place"
+            android:id="@+id/create_post_phone"
+            android:inputType="phone"
+            android:hint="@string/create_post_phone"
             android:textColorHint="@color/white"
             android:textSize="16dp"
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/create_post_place"
+                android:layout_below="@id/create_post_phone"
                 android:popupBackground="@color/colorPrimary"/>
 
 

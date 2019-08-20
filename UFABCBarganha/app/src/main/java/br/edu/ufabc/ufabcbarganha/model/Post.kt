@@ -31,6 +31,7 @@ class Post : Serializable {
         var postType: PostType = PostType.PRODUCT
         var username: String = ""
         var productName: String = ""
+        var phone: String = ""
         var photo: String = ""
         var price: Double = 0.0
         var description: String = ""

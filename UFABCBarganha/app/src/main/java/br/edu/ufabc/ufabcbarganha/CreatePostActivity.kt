@@ -53,12 +53,12 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
 
     private lateinit var productTitle: EditText
     private lateinit var productPrice: EditText
-    private lateinit var localization: EditText
     private lateinit var productDescription: MultiAutoCompleteTextView
     private lateinit var addPhoto: Button
     private lateinit var createPost: Button
     private lateinit var productPhoto: ImageView
     private lateinit var postType: Spinner
+    private lateinit var phone: EditText
 
     private lateinit var photoUri: Uri
 
@@ -94,12 +94,13 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     private fun initializeViews() {
         productTitle = findViewById(R.id.create_post_title)
         productPrice = findViewById(R.id.create_post_price)
-        localization = findViewById(R.id.create_post_place)
+        phone = findViewById(R.id.create_post_phone)
         productDescription = findViewById(R.id.create_post_description)
         addPhoto = findViewById(R.id.add_photo_button)
         createPost = findViewById(R.id.create_post_button)
         productPhoto = findViewById(R.id.product_photo_imageview)
         postType = findViewById(R.id.post_type)
+
 
         postType.adapter = ArrayAdapter(
             this,
@@ -169,6 +170,7 @@ class CreatePostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         post.description = productDescription.text.toString()
         post.postTime = Calendar.getInstance().time
         post.postType = postType.selectedItem as Post.PostType
+        post.phone = phone.text.toString()
 
         if(postType.selectedItem == Post.PostType.HOUSING){
             post.lat = positionMarker!!.position.latitude

@@ -101,6 +101,9 @@
     <string name="add_photo">Adicionar Foto</string>
     <string name="hint_phone">Telefone</string>
     <string name="create_post_phone">Telefone</string>
+    <string name="remove_post">Remover</string>
+    <string name="removed_with_success">Post Removido</string>
+    <string name="remove_failure">Falha ao remover</string>
 
 
 </resources>

@@ -24,6 +24,19 @@ object PostDAO {
             .addOnFailureListener { result -> callback.onFailure(result) }
     }
 
+    fun remove(post: Post, callback: FirestoreDatabaseOperationListener<Void?>) {
+        val userId = FirebaseUserHelper.getUserId()
+        if(userId == null){
+            callback.onFailure(RuntimeException("Failure not logged ?"))
+        }
+        post.userId = userId!!
+        BarganhaFirebaseDatabase.getInstance().collection(POSTS_COLLECTION)
+            .document(post.id)
+            .delete()
+            .addOnSuccessListener { callback.onSuccess(null) }
+            .addOnFailureListener { result -> callback.onFailure(result) }
+    }
+
     fun getAllByUserId(userId: String?, callback: FirestoreDatabaseOperationListener<List<Post>>){
         if(userId == null){
             callback.onFailure(RuntimeException("Failure user is null"))

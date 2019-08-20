@@ -5,14 +5,16 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import br.edu.ufabc.ufabcbarganha.App
 import br.edu.ufabc.ufabcbarganha.R
 import br.edu.ufabc.ufabcbarganha.data.firestore.FirestoreDatabaseOperationListener
+import br.edu.ufabc.ufabcbarganha.data.firestore.PostDAO
 import br.edu.ufabc.ufabcbarganha.data.firestore.UserDataDAO
 import br.edu.ufabc.ufabcbarganha.model.Post
+import br.edu.ufabc.ufabcbarganha.user.data.FirebaseUserHelper
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -45,7 +47,6 @@ class PostDetailActivity : AppCompatActivity() {
         setViews()
         populate(post)
 
-        interest.setOnClickListener { onInterestClicked() }
         bargain.setOnClickListener { onBargainClicked() }
     }
 
@@ -66,6 +67,15 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun populate(post: Post) {
+        if(FirebaseUserHelper.getUserId()!! == post.userId){
+            bargain.visibility = View.GONE
+            interest.setText(R.string.remove_post)
+            interest.setOnClickListener { removePost() }
+        }
+        else{
+            interest.setOnClickListener { onInterestClicked() }
+        }
+
         username.text = post.username
         postTime.text = post.postTime.toString()
         productName.text = post.productName
@@ -74,6 +84,21 @@ class PostDetailActivity : AppCompatActivity() {
 
         userPhoto.setImageResource(R.drawable.ic_person)
         Picasso.get().load(post.photo).into(productPhoto)
+    }
+
+    private fun removePost(){
+        PostDAO.remove(post, object : FirestoreDatabaseOperationListener<Void?>{
+            override fun onSuccess(result: Void?) {
+                Toast.makeText(this@PostDetailActivity, R.string.removed_with_success, Toast.LENGTH_LONG).show()
+                val intent = Intent(this@PostDetailActivity, FeedActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+            }
+
+            override fun onFailure(e: Exception) {
+                Toast.makeText(this@PostDetailActivity, R.string.remove_failure, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     private fun onInterestClicked(){

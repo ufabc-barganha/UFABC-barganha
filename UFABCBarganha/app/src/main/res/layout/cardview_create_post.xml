@@ -98,11 +98,16 @@
         <ImageView
                 android:id="@+id/product_photo_imageview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/btn_dialog"
-                android:layout_below="@id/create_post_description"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:maxHeight="?android:attr/listPreferredItemHeight"
+                android:maxWidth="?android:attr/listPreferredItemHeight"
+                android:scaleType="centerCrop"
+                android:layout_alignTop="@id/create_post_button"
+                android:layout_alignBottom="@id/add_photo_button"
                 android:layout_toLeftOf="@id/add_photo_button"
-                android:layout_toStartOf="@id/add_photo_button"/>
+                android:layout_toStartOf="@id/add_photo_button"
+                android:layout_marginRight="@dimen/general_space"/>
 
 
         <FrameLayout

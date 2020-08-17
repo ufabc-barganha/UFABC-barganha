@@ -8,6 +8,8 @@ Apesar de a solução atual tomada pela comunidade acadêmica ser funcional, ela
 
 Entre outros problemas, devemos ainda considerar a falta de segurança, visto que pessoas fora da comunidade acadêmica são facilmente aceitas nesses grupos, cuja administração é manual. Isso não só possibilita a exposição de alunos a pessoas não conhecidas, como também o surgimento de spams, com produtos que se distanciam em muito aos negociados por universitários. Soma-se a isso também o fato de os usuários terem de se adaptar à plataforma, que é de uso geral. Decai sobre isso, por exemplo, a impossibilidade de ser lembrado ao surgir um anúncio cujo produto seja de interesse do usuário.
 
+Funcionamento: https://vimeo.com/354791467
+
 ## Arquitetura
 
 Arquitetura interna do aplicativo, incluindo todas as  Activities e classes utilizadas no desenvolvimento:
